@@ -18,6 +18,9 @@ const originalGroupRaw={"snsd": 280, "2ne1": 400, "davichi": 1520};
 const ranks=['Squire','Knight','Castellan','Baroness','Countess','Duchess','Queen','Empress'];
 const rankColors=['#9ba9ba','#83c9a1','#80c8dd','#8aa5fa','#c0a0f0','#f19fc9','#f8af80','#f5d16e'];
 const memberCost=[100,200,400,800,1500,2500,4000],groupCost=[200,350,650,1100,1800,2600,4000],chance=[1,1,.8,.6,.4,.15,.05];
-const path=[{x:0,y:85},{x:820,y:85},{x:820,y:210},{x:80,y:210},{x:80,y:335},{x:900,y:335}];
-const slots=[{x:145,y:146},{x:295,y:146},{x:445,y:146},{x:595,y:146},{x:745,y:146},{x:145,y:273},{x:295,y:273},{x:445,y:273},{x:595,y:273},{x:745,y:273},{x:370,y:31},{x:530,y:389}];
+// v0.6 — fixed 6 × 3 board, independent deployment capacity.
+const BOARD_W=900,BOARD_H=420,TILE=86;
+const stageCaps=[8,10,12,14,16,18],stageCosts=[300,500,900,1500,2400],bossLimit=75;
+const path=[{x:150,y:45},{x:750,y:45},{x:750,y:375},{x:150,y:375},{x:150,y:45}];
+const slots=Array.from({length:18},(_,i)=>({x:235+(i%6)*TILE,y:124+Math.floor(i/6)*TILE}));
 const segs=path.slice(1).map((p,i)=>Math.hypot(p.x-path[i].x,p.y-path[i].y)),length=segs.reduce((a,b)=>a+b,0);
