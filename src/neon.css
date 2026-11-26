@@ -1,6 +1,6 @@
 /* NEON ENCORE — web client art direction. All mechanics remain in existing scripts. */
 :root{--bg:#0a1120;--ink:#f3f7ff;--fg:#eaf1ff;--muted:#a1b2cb;--accent:#83e9d4;--line:#6784af48;--gold:#ffd38c;--dia:#b0dfff;--surface:#111d30;--mint:#8af4d9;--violet:#b4a6ff}
-body{background:radial-gradient(ellipse at 8% -5%,#28466d 0,transparent 40%),radial-gradient(ellipse at 99% 18%,#40265b 0,transparent 44%),linear-gradient(150deg,#101d32,#070c18 75%);color:var(--fg);font-family:system-ui,"Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+body{background:radial-gradient(ellipse at 8% -5%,#28466d 0,transparent 40%),radial-gradient(ellipse at 99% 18%,#40265b 0,transparent 44%),linear-gradient(150deg,#101d32,#070c18 75%);color:var(--fg);font-family:var(--grd-font,"Freesentation","Malgun Gothic","Apple SD Gothic Neo",sans-serif)}
 body:before{background:repeating-linear-gradient(120deg,transparent 0 108px,#a9d9ff05 109px 110px)}
 header{background:linear-gradient(180deg,#1b2b43f7,#0e182be8);border-color:#607c9d55;padding:10px 22px;gap:12px}
 header:after{background:linear-gradient(90deg,transparent,#8af4d9,#9eafff,transparent)}
