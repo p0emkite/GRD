@@ -32,10 +32,10 @@ function combatHit(u,e,st,source,deployed){let damage=st.damage,crit=st.role==='
  if(proc&&(skill.kind==='pierce'||skill.kind==='critical'||skill.kind==='tempo')){damage*=skill.power;crit=crit||skill.kind==='critical'}
  if(proc&&skill.kind==='tempo')u.cd*=.35;
  if(proc&&skill.kind==='cheer')for(const v of deployed)if(v!==u&&Math.hypot(slots[v.slot].x-source.x,slots[v.slot].y-source.y)<220)v.cd=Math.max(0,v.cd-.18);
- const rawDamage=damage;damage=damageEnemy(u,e,damage);const color=g?g.color:unitHue(u);effects.push({kind:'hit',x:source.x,y:source.y,tx:p.x,ty:p.y,t:.15,color,style:skill&&proc?skill.kind:st.role});
+ const rawDamage=damage;damage=damageEnemy(u,e,damage);const color=g?g.color:unitHue(u);if(!proc)effects.push({kind:'hit',x:source.x,y:source.y,tx:p.x,ty:p.y,t:.15,color,style:st.role});
  effects.push({kind:'number',x:p.x,y:p.y,t:.55,color:crit?'#ffe18c':'#fff1ff',text:(crit?'CRIT ':'')+Math.round(damage),crit});
  if(st.role==='감속')e.slow=1.6*(1+.25*perk('chill'));
  if(st.role==='광역'||proc&&['blast','freeze'].includes(skill.kind)){const radius=proc&&skill.radius?skill.radius:65,ratio=proc&&skill.kind==='blast'?skill.power*.65:.45;effects.push({kind:'area',x:p.x,y:p.y,t:.35,color,radius});for(const other of state.enemies){if(other===e||other.hp<=0)continue;const q=point(other.d);if(Math.hypot(q.x-p.x,q.y-p.y)<radius){damageEnemy(u,other,rawDamage*ratio*(1+.15*perk('splash')));if(proc&&skill.kind==='freeze')other.slow=3.2*(1+.25*perk('chill'))}}if(proc&&skill.kind==='freeze')e.slow=3.2*(1+.25*perk('chill'))}
- if(proc){effects.push({kind:'skill',x:source.x,y:source.y-28,t:.85,color,text:skill.name});}
+ if(proc)emitSkillFX(g,skill,source,p,skill.kind==='cheer'?deployed.filter(v=>v!==u&&Math.hypot(slots[v.slot].x-source.x,slots[v.slot].y-source.y)<220).map(v=>slots[v.slot]):[]);
  if(effects.length>180)effects.splice(0,effects.length-180);
 }
