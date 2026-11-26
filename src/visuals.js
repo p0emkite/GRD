@@ -12,7 +12,7 @@ let stageScale=0;
 function syncStageResolution(){
  const rect=canvas.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
  // Supersample the actual CSS display size, including browser zoom and high DPI.
- const ratio=Math.max(1,Math.min(3,Math.ceil((Math.max(rect.width/BOARD_W,rect.height/BOARD_H)*dpr*1.35)*4)/4));
+ const ratio=Math.max(1,Math.min(mobileRenderCap(),Math.ceil((Math.max(rect.width/BOARD_W,rect.height/BOARD_H)*dpr*1.35)*4)/4));
  if(stageScale===ratio&&stageBackdrop)return;
  stageScale=ratio;canvas.width=Math.round(BOARD_W*ratio);canvas.height=Math.round(BOARD_H*ratio);
  stageBackdrop=buildStage();

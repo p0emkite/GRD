@@ -1,0 +1,59 @@
+/* Dedicated touch layout, safe areas, no duplicate game state. */
+#mobileDock,.mobile-move-row{display:none}
+@media(pointer:coarse){
+html.touch-game{overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.touch-game body{min-width:0;overflow-x:hidden}
+.touch-game button,.touch-game select{touch-action:manipulation}
+.touch-game input:not([type=checkbox]):not([type=range]),.touch-game select,.touch-game textarea{font-size:16px}
+.touch-game .tour-dialog{max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));max-width:calc(100vw - 20px - env(safe-area-inset-left) - env(safe-area-inset-right));overscroll-behavior:contain}
+.touch-game .tour-dialog button{min-height:44px}.touch-game .pool-grid{max-height:36dvh}
+.touch-game .bench .inventory,.touch-game .bench-token{touch-action:pan-x;-webkit-overflow-scrolling:touch}
+.touch-game .bench-token{min-width:72px;flex-basis:72px;min-height:64px}
+.touch-game .bench-arrow{min-width:36px}
+.touch-game #board{touch-action:none}
+.touch-game .mobile-move-row{display:flex;align-items:center;gap:7px;order:4;padding:4px 7px;background:#172d43;border:1px solid #698ba65e;border-radius:8px;min-height:38px}
+.touch-game .mobile-move-row span{flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#d3e8f2}.touch-game .mobile-move-row button{min-height:36px;padding:4px 12px}
+.touch-game .focus-member,.touch-game .focus-combine,.touch-game .detail-actions button,.touch-game .stage-control button,.touch-game .game-tabs button{min-height:44px}
+.touch-game .right .cast-action button{min-height:44px;font-size:13px}
+.touch-game .quick-auto label{min-height:30px;font-size:12px}.touch-game .quick-auto input{width:20px;height:20px}
+.touch-game .auto-cast-bar select,.touch-game .auto-cast-bar button{min-height:42px}
+.touch-game .combine-ready{width:23%;max-height:90%;overflow:auto;top:18px}.touch-game .ready-group{min-height:28px}
+.touch-game #revealSkip{min-height:44px;right:max(12px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom))}
+.touch-portrait body{display:block;height:auto;min-height:100dvh;padding-bottom:calc(112px + env(safe-area-inset-bottom));overflow-y:auto}
+.touch-portrait header{padding:calc(6px + env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) 6px max(8px,env(safe-area-inset-left));position:relative;gap:4px}
+.touch-portrait header .brand small,.touch-portrait .studio-link{display:none}
+.touch-portrait .header-actions{margin-left:auto;order:0}.touch-portrait .header-actions button{min-height:36px}
+.touch-portrait main{display:flex;flex-direction:column;gap:5px;padding:6px max(6px,env(safe-area-inset-right)) 8px max(6px,env(safe-area-inset-left))}
+.touch-portrait .arena,.touch-portrait .right{display:contents}
+.touch-portrait .arena>.head{order:0}.touch-portrait .battlehud{order:1}.touch-portrait .rookie-guide{order:2}.touch-portrait .board-legend{order:3}.touch-portrait .board-shell{order:4}.touch-portrait .mobile-move-row{order:5}.touch-portrait .boss-timer{order:6}.touch-portrait .wave-timer{order:7}.touch-portrait .controls{order:8}.touch-portrait .right>.cast-dock{order:9}.touch-portrait .stage-control{order:10}.touch-portrait .bench{order:11}.touch-portrait .detail{order:12}.touch-portrait .notice-strip{order:13}.touch-portrait .right>.game-tabs{order:14}.touch-portrait .right>.side-screen{order:15}
+.touch-portrait .board{width:100%}.touch-portrait .board-shell{min-height:0;container-type:normal}
+.touch-portrait .controls{flex-wrap:wrap}.touch-portrait .controls button{min-height:38px;padding:5px 8px}.touch-portrait .controls .spacer{flex:1}
+.touch-portrait .rookie-guide{font-size:11px;gap:4px}.touch-portrait .rookie-guide button{min-height:32px}
+.touch-portrait #mobileDock{position:fixed;z-index:70;bottom:0;left:0;right:0;display:grid;gap:4px;background:#101c30f5;border-top:1px solid #87c9c9;padding:5px max(7px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(7px,env(safe-area-inset-left));box-shadow:0 -4px 18px #02081788}
+.touch-portrait .mobile-casts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.touch-portrait .mobile-casts button{min-height:44px;display:grid;place-content:center;gap:1px;padding:3px;font-size:13px;line-height:1.1;color:#102437;background:linear-gradient(130deg,#83dfc7,#b9f5e4)}
+.touch-portrait .mobile-casts button:nth-child(2){background:linear-gradient(130deg,#a29de7,#dacfff)}
+.touch-portrait .mobile-casts button:nth-child(3){background:linear-gradient(130deg,#e7ac6e,#ffe2a8)}
+.touch-portrait .mobile-casts button:nth-child(4){background:linear-gradient(130deg,#89bce9,#d4f0ff)}
+.touch-portrait .mobile-casts button:disabled{opacity:.4}
+.touch-portrait .mobile-casts small{font-size:10px}
+.touch-portrait .mobile-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+.touch-portrait .mobile-nav button{min-height:44px;font-size:11px;padding:3px 1px;white-space:nowrap}.touch-portrait .mobile-nav button[aria-pressed=true]{color:#bcffe5;border-color:#99f3d3;background:#23564d}
+.touch-portrait .board-shell .selectpop{bottom:calc(118px + env(safe-area-inset-bottom));max-height:55dvh}
+.touch-portrait .bench,.touch-portrait .detail,.touch-portrait .cast-dock,.touch-portrait #focusProgress{scroll-margin-top:7px;scroll-margin-bottom:calc(112px + env(safe-area-inset-bottom))}
+.touch-landscape body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.touch-landscape header{flex:none;min-height:40px;padding:3px 8px;flex-wrap:nowrap;gap:8px}
+.touch-landscape header .brand-emblem{width:28px;height:28px}.touch-landscape header .brand h1{font-size:17px}.touch-landscape header .brand small,.touch-landscape .studio-link{display:none}.touch-landscape .header-actions{order:0;margin-left:auto}.touch-landscape .wallet{width:auto;gap:4px}.touch-landscape .wallet .stat{min-width:60px;padding:3px 6px}.touch-landscape .wallet .stat b{font-size:16px}
+.touch-landscape main{display:grid;grid-template-columns:minmax(0,1fr) minmax(245px,39%);grid-template-rows:minmax(0,1fr);gap:6px;padding:5px;flex:1;min-height:0;align-items:stretch}
+.touch-landscape .arena,.touch-landscape .right{display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;overflow-y:auto;overflow-x:hidden;gap:4px;overscroll-behavior:contain}
+.touch-landscape .right{grid-row:1;grid-column:2}.touch-landscape .arena{grid-row:1;grid-column:1;padding:5px}
+.touch-landscape .arena>*{order:0;flex-shrink:0}.touch-landscape .arena>.head h2{font-size:12px}.touch-landscape .battlehud b{font-size:15px}.touch-landscape .battlehud>div{padding:3px 4px}.touch-landscape .battlehud small{font-size:9px}
+.touch-landscape .board-shell{flex:none;container-type:normal;min-height:0}.touch-landscape .board{width:min(100%,calc((100dvh - 150px)*900/420));max-width:100%}
+.touch-landscape .controls{flex-wrap:wrap}.touch-landscape .controls button{min-height:36px;font-size:11px;padding:4px 6px}.touch-landscape .notice-strip{display:none}
+.touch-landscape .right>.cast-dock{order:0;position:relative;z-index:5;padding:5px;gap:4px}.touch-landscape .right .cast-action{padding:4px;gap:3px}.touch-landscape .right .cast-card-label small{display:none}.touch-landscape .right .cast-action button{min-height:36px;font-size:12px}
+.touch-landscape .right>.detail{order:1;max-height:none;flex-shrink:0}.touch-landscape .right>.game-tabs{order:2;flex-shrink:0}.touch-landscape .right>.side-screen{order:3;flex-shrink:0;overflow:visible}
+.touch-landscape .board-shell .selectpop{position:fixed;bottom:8px;right:max(8px,env(safe-area-inset-right));max-height:75dvh;z-index:100}
+.touch-landscape .auto-cast-bar{padding:4px}.touch-landscape .quick-auto{gap:4px}.touch-landscape .auto-cast-bar span{display:none}.touch-landscape .automation-config{min-height:32px}
+}
+
+@media(pointer:coarse){.touch-game .mobile-move-row button{min-height:44px}.touch-landscape .right .cast-action button{min-height:44px}.touch-game .selectpop button{min-height:44px}.touch-game .right>.side-screen[hidden]{display:none!important}.touch-portrait .overlay{overflow:auto}.touch-portrait .overlay h2{font-size:20px}.touch-portrait .overlay button{min-height:44px}.touch-game .board-shell .selectpop{max-width:calc(100vw - 24px)}.touch-game #groupCinematic{z-index:1200}.touch-game .bench-arrow{min-height:44px}}
