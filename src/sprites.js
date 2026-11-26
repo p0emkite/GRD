@@ -1,0 +1,31 @@
+'use strict';
+// GPU sprite/particle compositor. Canvas is retained for text, portraits, input and fallback.
+const spriteKinds=['basic','fast','armor','swarm','regen','shield','elite','boss0','boss1','boss2','boss3','boss4','boss5'];
+let spriteApp=null,spriteReady=false,spriteLoading=false,spriteEnemyAtlas=null,spriteFrames=null,venueArt=null,spriteTextures=[],spriteEnemies=[],spriteParticles=[],spriteResolution=0,fxTextures={};
+function loadArt(url){return new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=url})}
+function spriteIndex(e){return e.boss?7+((Math.floor(e.wave/5)-1)%6+6)%6:Math.max(0,spriteKinds.indexOf(e.kind||'basic'))}
+function frameIndex(u){return u.mythic?3:u.type==='group'?(u.level>=3?2:1):0}
+function drawFrameArt(c,u,x,y,r){if(!spriteFrames)return;const size=(r+5)*2.35;c.drawImage(spriteFrames,160*frameIndex(u),0,160,160,x-size/2,y+2-size/2,size,size)}
+function drawEnemyArt(c,e,x,y,r){if(!spriteEnemyAtlas)return false;const size=r*2.75;c.drawImage(spriteEnemyAtlas,144*spriteIndex(e),0,144,144,x-size/2,y-size/2,size,size);return true}
+function loadPixi(){if(window.PIXI)return Promise.resolve(window.PIXI);return new Promise((resolve,reject)=>{const tag=document.createElement('script');tag.src='https://cdn.jsdelivr.net/npm/pixi.js@8.14.3/dist/pixi.min.js';tag.async=true;let done=false;const finish=(err)=>{if(done)return;done=true;clearTimeout(timer);err?reject(err):resolve(window.PIXI)};const timer=setTimeout(()=>{tag.remove();finish(Error('Pixi load timeout'))},6500);tag.onload=()=>window.PIXI?finish():finish(Error('Pixi missing'));tag.onerror=()=>finish(Error('Pixi unavailable'));document.head.append(tag)})}
+function canvasTexture(P,w,h,paint){const c=document.createElement('canvas');c.width=w;c.height=h;paint(c.getContext('2d'),w,h);return P.Texture.from(c,true)}
+async function initSpriteLayer(){if(spriteLoading)return;spriteLoading=true;const status=$('rendererStatus');status.textContent='CANVAS HD';
+ const assets=await Promise.allSettled([loadArt('assets/encore/enemies.svg'),loadArt('assets/encore/frames.svg'),loadArt('assets/encore/venue.svg')]);if(assets[0].status==='fulfilled')spriteEnemyAtlas=assets[0].value;if(assets[1].status==='fulfilled')spriteFrames=assets[1].value;if(assets[2].status==='fulfilled'){venueArt=assets[2].value;stageBackdrop=null}
+ if(!spriteEnemyAtlas)return;
+ try{const P=await loadPixi();const app=new P.Application();const r=canvas.getBoundingClientRect();spriteResolution=Math.max(1,Math.min(3,Math.ceil((r.width/BOARD_W)*(window.devicePixelRatio||1)*1.25*4)/4));await app.init({width:BOARD_W,height:BOARD_H,resolution:spriteResolution,autoDensity:true,backgroundAlpha:0,antialias:true,preference:'webgl',autoStart:false,sharedTicker:false});app.stop();app.canvas.className='sprite-layer';app.canvas.setAttribute('aria-hidden','true');app.canvas.addEventListener('webglcontextlost',()=>disableSpriteLayer());canvas.parentElement.insertBefore(app.canvas,canvas.nextSibling);
+ spriteApp=app;for(let i=0;i<spriteKinds.length;i++)spriteTextures.push(canvasTexture(P,144,144,c=>c.drawImage(spriteEnemyAtlas,i*144,0,144,144,0,0,144,144)));
+ fxTextures.glow=canvasTexture(P,96,96,(c,w,h)=>{const g=c.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2);g.addColorStop(0,'#ffffffff');g.addColorStop(.22,'#ffffffb0');g.addColorStop(.55,'#ffffff40');g.addColorStop(1,'#ffffff00');c.fillStyle=g;c.fillRect(0,0,w,h)});
+ fxTextures.spark=canvasTexture(P,64,64,c=>{c.fillStyle='#fff';c.beginPath();c.moveTo(32,0);c.lineTo(38,25);c.lineTo(64,32);c.lineTo(38,38);c.lineTo(32,64);c.lineTo(26,38);c.lineTo(0,32);c.lineTo(26,25);c.closePath();c.fill()});
+ fxTextures.ring=canvasTexture(P,128,128,c=>{c.strokeStyle='#ffffffef';c.lineWidth=3;c.beginPath();c.arc(64,64,59,0,Math.PI*2);c.stroke();c.strokeStyle='#ffffff60';c.lineWidth=1;c.beginPath();c.arc(64,64,50,0,Math.PI*2);c.stroke()});
+ spriteReady=true;status.textContent='PIX I'.replace(' ','')+' · WEBGL';app.render();
+ }catch(err){console.warn('GRD WebGL fallback',err);disableSpriteLayer()}}
+function disableSpriteLayer(){spriteReady=false;try{spriteApp?.canvas?.remove();spriteApp?.destroy({removeView:true},{children:true})}catch{}spriteApp=null;spriteEnemies=[];spriteParticles=[];const el=document.getElementById('rendererStatus');if(el)el.textContent='CANVAS HD'}
+function getSprite(pool,i,texture){let s=pool[i];if(!s){s=new window.PIXI.Sprite(texture);s.anchor.set(.5);spriteApp.stage.addChild(s);pool[i]=s}else if(s.texture!==texture)s.texture=texture;s.visible=true;return s}
+function gpuParticle(i,tex,x,y,size,color,alpha,rotation=0){const s=getSprite(spriteParticles,i,fxTextures[tex]);s.position.set(x,y);s.width=s.height=size;s.tint=color;s.alpha=alpha;s.rotation=rotation;s.blendMode='add';return i+1}
+function renderSpriteLayer(){if(!spriteReady||!spriteApp||!state)return;try{
+ const rect=canvas.getBoundingClientRect(),res=Math.max(1,Math.min(3,Math.ceil((rect.width/BOARD_W)*(window.devicePixelRatio||1)*1.25*4)/4));if(res!==spriteResolution){spriteApp.renderer.resize(BOARD_W,BOARD_H,res);spriteResolution=res}
+ let n=0;const t=performance.now()/1000;for(const e of state.enemies){const p=point(e.d),r=e.boss?19:10,s=getSprite(spriteEnemies,n++,spriteTextures[spriteIndex(e)]);s.position.set(p.x,p.y+(stageReduced?0:Math.sin(t*9+e.d*.035)*1.5));s.width=s.height=r*2.75;s.tint=e.slow>0?0xb5f3ff:0xffffff;s.alpha=1;s.rotation=0}
+ for(let i=n;i<spriteEnemies.length;i++)spriteEnemies[i].visible=false;
+ let k=0;for(const e of effects){if(k>220)break;if(e.kind==='area'){const f=1-e.t/.35;k=gpuParticle(k,'ring',e.x,e.y,e.radius*(.7+1.3*f),e.color,Math.max(0,e.t/.35)*.7)}else if(e.kind==='hit'){const f=1-Math.max(0,e.t/.15),color=e.color;const style=e.style;k=gpuParticle(k,'glow',e.tx,e.ty,24+f*36,color,.75*(1-f));if(!stageReduced){const count=style==='blast'||style==='광역'?7:style==='pierce'||style==='저격'?3:style==='freeze'||style==='감속'?5:4;for(let j=0;j<count;j++){const a=j*2*Math.PI/count+e.tx*.02,rad=5+f*(style==='blast'?38:24);k=gpuParticle(k,style==='freeze'?'ring':'spark',e.tx+Math.cos(a)*rad,e.ty+Math.sin(a)*rad,5+(1-f)*6,color,.9*(1-f),a)}}}}
+ for(let i=k;i<spriteParticles.length;i++)spriteParticles[i].visible=false;spriteApp.render();
+ }catch(err){console.warn('GRD GPU render failed',err);disableSpriteLayer()}}
