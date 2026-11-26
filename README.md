@@ -1,4 +1,4 @@
-# IDOL RANDOM DEFENSE v0.3
+# IDOL RANDOM DEFENSE v0.4
 
 걸랜디 × 카드걸랜디 기반 독립형 웹게임. 별도 빌드/설치/서버가 필요하지 않습니다.
 
@@ -20,3 +20,9 @@
 
 ## 유의
 원작 SCX 자체와 사진/음원은 포함하지 않았습니다. 원작 환산 수치는 v0.2의 값으로 실제 스타크래프트 엔진과 다릅니다. 전체 라운드 밸런스는 아직 미검증입니다. 공개 배포 전 이름·이미지·음원 사용 권리를 별도로 검토하세요.
+
+## v0.4 — Starlight Tour / visual overhaul
+- ITM-inspired concert lighting, metallic catwalks, glowing enemy sprites, stylized original vector idol avatars, rarity frames and attack bursts.
+- Tabbed game controls, jewel-like currency HUD, casting panels and card collection. Responsive layout for desktop and narrow screens.
+- src/visuals.js handles canvas artwork and menu tabs; existing data, combat timing, casting, upgrade and merge rules preserved.
+- No celebrity photos, licensed music or external graphics included. Browser playtest and full balance QA still required.
