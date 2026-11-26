@@ -1,4 +1,4 @@
-# GRD — v0.8 / Creator Studio 2.0
+# GRD — v0.9 / World Tour
 Static K-pop random defense game. GitHub Pages: main / root.
 
 - Game: index.html
@@ -37,3 +37,11 @@ src/data.js — baseline groups and waves; src/catalog.js — shared catalog/sto
 - Image/audio upload, crop/preview, group metadata and combat/skill overrides, search, bulk JSON import/export and legacy local catalog migration. Save publishes the full snapshot using a revision check. Media is publicly readable, write access is admin-only. Removing a reference does not automatically delete the stored object.
 - Initial catalog: 9 groups. No media rights or assets are assumed. Do not enter passwords in chat or commit secret keys.
 - Migration SQL: supabase/grd_creator_studio_v2.sql (already applied to the existing shared project; do not rerun blindly). Database role checks passed in a rolled-back transaction. Real administrator sign-in, upload, crop and browser QA remain to be tested by the owner.
+
+## v0.9 — World Tour
+- Run setup: select up to three preferred groups and fill up to twelve from the published catalog; daily mode uses a shared KST-date server-frozen catalog and seeded random pool. Current initial catalog has nine teams; additional groups are managed in Creator Studio.
+- Six modes (20/30/40/50 rounds, endless, daily), extended wave progression, six boss patterns, 11 selectable perks after nonfinal bosses, generation/agency/unit synergies, six configured hidden recipes (available only if both parent groups exist in the run pool). Hidden groups are fictional GRD combinations and require two three-star groups.
+- Batch/automatic combine and merge, manual and automatic three-star lock, duplicate bench sale, next wave preview, damage totals/average DPS, end lineup, local auto-save/resume, volume controls and optional user-provided BGM, skip seen reveals.
+- Independent GRD signup/login via grd-register Edge Function, separate auth namespace and app metadata, private player profile, opt-in unverified public leaderboard. Guest profile and saved games are local; signed-in profiles sync to server, run saves remain local. No permanent combat power from XP. Cosmetic gold border unlocked by a clear.
+- Existing ITM login is no longer authorized for GRD editing. Create a GRD account first, then the owner must explicitly authorize that account in private.grd_studio_admins; do not auto-promote a public signup. Infrastructure remains shared, identity/content/permissions are separate.
+- Three new migrations have been applied to the shared project. Logic tests cover pool/hidden recipe/synergy/augment, boss damage and summons, modes, deterministic RNG, lock, cast batch, save/restore, profile, daily snapshot and denial of ITM administrator access. Actual signed-in browser upload and full-run game balance are not yet tested. Leaderboard is client-reported, not anti-cheat verified.

@@ -40,7 +40,7 @@ function show(){
 }
 function validated(){if(!admin||saving)throw Error('관리자 로그인 또는 저장 상태를 확인하세요.');if(pending)throw Error('파일 등록 중입니다.');sync();return normalizeCatalog(draft)}
 async function reloadPublished(){const loaded=await fetchPublished();draft=loaded.data;revision=loaded.revision;index=Math.min(index,draft.groups.length-1);$s('sourceLabel').textContent='CLOUD · r'+revision;show()}
-function access(){const root=$s('studioMain');root.inert=!admin||saving;$s('loginForm').hidden=admin;$s('logout').hidden=!admin;$s('logout').disabled=saving||pending>0;$s('authState').textContent=admin?'GRD 관리자 · 공개 편집 가능':'ITM 관리자 계정으로 로그인'}
+function access(){const root=$s('studioMain');root.inert=!admin||saving;$s('loginForm').hidden=admin;$s('logout').hidden=!admin;$s('logout').disabled=saving||pending>0;$s('authState').textContent=admin?'GRD 관리자 · 공개 편집 가능':'GRD 관리자 계정으로 로그인'}
 async function boot(){for(const role of roleOptions){const o=document.createElement('option');o.value=o.textContent=role;$s('role').append(o)}await reloadPublished();try{admin=await cloudAdmin()}catch(e){console.warn(e)}access()}
 $s('loginForm').onsubmit=async ev=>{ev.preventDefault();try{await cloudLogin($s('loginName').value,$s('loginPassword').value);admin=true;await reloadPublished();status('관리자 로그인 완료')}catch(e){admin=false;status(e.message||'로그인 실패',true);$s('authState').textContent=e.message||'로그인 실패'}finally{$s('loginPassword').value='';access();if(!admin)$s('authState').textContent='로그인 실패 · 계정과 권한을 확인하세요.'}};
 $s('logout').onclick=async()=>{if(saving||pending)return;await cloudLogout();admin=false;access()};
