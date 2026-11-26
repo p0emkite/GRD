@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
   catch { return respond({ error: "입력값을 확인해 주세요." }, 400, origin); }
   const username = typeof body.username === "string" ? body.username.trim().toLowerCase() : "";
   const password = body.password;
-  const nickname = typeof body.nickname === "string" ? body.nickname.trim() : username;
+  const nickname = typeof body.nickname === "string" ? body.nickname.trim() : "";
   if (!USERNAME.test(username))
     return respond({ error: "아이디는 영문 소문자로 시작해야 합니다. 영문 소문자, 숫자, 밑줄을 사용해 4~20자로 입력해 주세요." }, 400, origin);
   if (!/^[가-힣A-Za-z0-9_]{2,16}$/.test(nickname))
@@ -56,15 +56,15 @@ Deno.serve(async (req) => {
     email: emailFor(username),
     password,
     email_confirm: true,
-    app_metadata: { grd_named_account: true, grd_username: username }
+    app_metadata: { grd_named_account: true, grd_username: username, grd_initial_nickname: nickname }
   });
   if (error) {
     const msg = (error.message || "").toLowerCase();
-    if(msg.includes("nickname")||msg.includes("profiles")||msg.includes("unique"))
+    if(msg.includes("grd_nickname")||msg.includes("nickname"))
       return respond({error:"이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해 주세요."},409,origin);
     if (msg.includes("already") || msg.includes("exists") || error.status === 422)
       return respond({ error: "이미 사용 중인 아이디입니다. 다른 아이디를 선택해 주세요." }, 409, origin);
-    return respond({ error: "계정 생성에 실패했습니다. 입력값을 확인하거나 다시 시도해 주세요." }, 400, origin);
+    return respond({ error: "계정 생성에 실패했습니다. 이미 사용 중인 닉네임인지 확인하거나 다른 닉네임으로 다시 시도해 주세요." }, 400, origin);
   }
   return respond({ ok: true }, 201, origin);
 });
