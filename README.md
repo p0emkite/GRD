@@ -1,4 +1,4 @@
-# GRD — v0.7 / Spotlight & Balance
+# GRD — v0.8 / Creator Studio 2.0
 Static K-pop random defense game. GitHub Pages: main / root.
 
 - Game: index.html
@@ -30,3 +30,10 @@ src/data.js — baseline groups and waves; src/catalog.js — shared catalog/sto
 - Nine group-specific song-title-inspired combat skills (no songs bundled); generic skill by role for additional groups. Damage/critical numbers, area bursts, skill labels, boss banners and kill streaks.
 - Simulation QA: fixed seeds 21/73/119, automated recruitment/merges/upgrades/expansion, no manual positioning, optional training from R12. Final training-enabled run results: normal 3/3 clears, Davichi-only 0/3 (all R30), gamble 2/3, IZ*ONE-only 3/3, Davichi opening then general at R8 3/3. This is a small tuning sample, not a live playtest or a proof of equal balance. All nine skills, batch purchases, duplicate penalty, training and merge preservation passed logic tests.
 - src/balance.js contains tuning and combat skills; src/update.css contains new UI. Existing creator studio assets retained. Deployed browser graphics/audio and mobile touch QA still pending.
+
+## v0.8 — Creator Studio 2.0
+- Server-published GRD catalog in Supabase, isolated from ITM content; GRD media bucket and independent administrator allowlist initialized from the existing ITM studio admins.
+- Log in with the existing ITM administrator ID/password. Public game reads the latest published catalog on load; reset/new game reloads it. Running games keep their original snapshot. On server errors game falls back to local or bundled data.
+- Image/audio upload, crop/preview, group metadata and combat/skill overrides, search, bulk JSON import/export and legacy local catalog migration. Save publishes the full snapshot using a revision check. Media is publicly readable, write access is admin-only. Removing a reference does not automatically delete the stored object.
+- Initial catalog: 9 groups. No media rights or assets are assumed. Do not enter passwords in chat or commit secret keys.
+- Migration SQL: supabase/grd_creator_studio_v2.sql (already applied to the existing shared project; do not rerun blindly). Database role checks passed in a rolled-back transaction. Real administrator sign-in, upload, crop and browser QA remain to be tested by the owner.

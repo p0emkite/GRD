@@ -11,7 +11,7 @@ const skillProfiles={
  tts:{name:'Twinkle',kind:'pierce',every:5,power:2.1},
  misamo:{name:'Do not touch',kind:'freeze',every:5,power:1.2,radius:95}
 };
-function groupSkill(g){return Object.hasOwn(skillProfiles,g.id)?skillProfiles[g.id]:({광역:{name:'ENCORE',kind:'blast',every:5,power:1.2,radius:110},감속:{name:'SPOTLIGHT',kind:'freeze',every:5,power:1.1,radius:100},지원:{name:'CHEER',kind:'cheer',every:5,power:1.25},저격:{name:'FINALE',kind:'pierce',every:5,power:2.1}}[g.role]||{name:'SHOWTIME',kind:'critical',every:5,power:2})}
+function groupSkill(g){if(g.combat?.skill)return g.combat.skill;return Object.hasOwn(skillProfiles,g.id)?skillProfiles[g.id]:({광역:{name:'ENCORE',kind:'blast',every:5,power:1.2,radius:110},감속:{name:'SPOTLIGHT',kind:'freeze',every:5,power:1.1,radius:100},지원:{name:'CHEER',kind:'cheer',every:5,power:1.25},저격:{name:'FINALE',kind:'pierce',every:5,power:2.1}}[g.role]||{name:'SHOWTIME',kind:'critical',every:5,power:2})}
 function focusGroup(){return groups.find(g=>g.id===state.focusId)||groups[0]}
 function setFocus(id){if(!state||state.done||state.paused||!groups.some(g=>g.id===id))return;state.focusId=id;render()}
 function groupDrawCost(g){return g.members.length<=5?2:1}
@@ -20,7 +20,7 @@ function groupDraw(g){const missing=g.members.filter(n=>!state.units.some(u=>u.t
 function normalDraw(){const missing=members.filter(n=>!state.units.some(u=>u.type==='member'&&u.name===n));return pick(missing.length&&Math.random()<.65?missing:members)}
 function gambleTier(){const r=Math.random();return r<.01?3:r<.1?2:1}
 function duplicateFactor(u){if(u.slot<0)return 1;const copies=state.units.filter(v=>v.slot>=0&&v.type==='group'&&v.gid===u.gid).sort((a,b)=>b.level-a.level||a.id-b.id);const i=copies.findIndex(v=>v.id===u.id);return [1,.72,.50,.35,.27][i]??.20}
-function groupBase(g){const n=g.members.length,raw=originalGroupRaw[g.id],factor=raw?Math.max(.94,Math.min(1.06,Math.pow(raw/500,.08))):1;return 38*Math.pow(n,1.28)*factor}
+function groupBase(g){if(g.combat?.damage!=null)return g.combat.damage;const n=g.members.length,raw=originalGroupRaw[g.id],factor=raw?Math.max(.94,Math.min(1.06,Math.pow(raw/500,.08))):1;return 38*Math.pow(n,1.28)*factor}
 const trainingCosts=[1500,2500,4000,6000,8500,11500,15000,19000];
 function trainTeam(){if(!state||state.done||state.paused)return false;const cost=trainingCosts[state.training];if(!cost||state.gold<cost)return false;state.gold-=cost;state.training++;log('TEAM TRAINING +'+state.training,'good');render();return true}
 function teamBoost(){return 1+.12*(state.training||0)}

@@ -12,6 +12,8 @@ function safeAsset(v,kind='image'){
  if(/^(?:\.\/)?assets\/[a-zA-Z0-9_./%-]+$/.test(v)&&!v.includes('..'))return v;
  throw Error('HTTPS 주소, assets/ 경로 또는 지원되는 업로드 파일을 사용하세요.');
 }
+function numField(v,min,max){if(v===undefined||v===null||v==='')return null;const n=Number(v);if(!Number.isFinite(n)||n<min||n>max)throw Error('전투 설정 범위를 확인하세요.');return n}
+function normalizeCombat(v={}){const skill=v.skill||{};const kind=['tempo','blast','pierce','critical','freeze','cheer'].includes(skill.kind)?skill.kind:'';return {damage:numField(v.damage,1,100000),interval:numField(v.interval,.15,10),range:numField(v.range,40,900),skill:kind?{name:String(skill.name||'SHOWTIME').slice(0,80),kind,every:Math.round(numField(skill.every,1,50)??5),power:numField(skill.power,.1,10)??1.5,radius:numField(skill.radius,20,500)??110}:null}}
 function normalizeCatalog(raw){
  if(!raw||!Array.isArray(raw.groups)||!raw.groups.length||raw.groups.length>500)throw Error('그룹은 1~500개가 필요합니다.');
  const seen=new Set(),names=new Set();
@@ -24,7 +26,7 @@ function normalizeCatalog(raw){
   const ms=g.members.map(n=>String(n).trim());
   if(!ms.length||ms.length>50||new Set(ms).size!==ms.length||ms.some(n=>!n||n.length>80))throw Error(name+'의 멤버 이름 또는 중복을 확인하세요.');
   ms.forEach(n=>names.add(n));
-  return {id,name,members:ms,role:roleOptions.includes(g.role)?g.role:'기본',color:/^#[0-9a-f]{6}$/i.test(g.color||'')?g.color:'#e1b0ff',sub:!!g.sub,photo:safeAsset(g.photo),logo:safeAsset(g.logo),reveal:safeAsset(g.reveal),audio:safeAsset(g.audio,'audio')};
+  return {id,name,members:ms,role:roleOptions.includes(g.role)?g.role:'기본',color:/^#[0-9a-f]{6}$/i.test(g.color||'')?g.color:'#e1b0ff',sub:!!g.sub,generation:String(g.generation||'').slice(0,24),agency:String(g.agency||'').slice(0,80),country:String(g.country||'').slice(0,40),combat:normalizeCombat(g.combat||{}),photo:safeAsset(g.photo),logo:safeAsset(g.logo),reveal:safeAsset(g.reveal),audio:safeAsset(g.audio,'audio')};
  });
  const photos=Object.create(null);for(const n of names){const p=raw.memberPhotos&&Object.hasOwn(raw.memberPhotos,n)?raw.memberPhotos[n]:'';if(p)photos[n]=safeAsset(p)}
  return {version:1,groups:list,memberPhotos:photos};
@@ -34,6 +36,7 @@ async function localCatalog(write){
  const db=await openCatalogDB();return new Promise((resolve,reject)=>{const tx=db.transaction(catalogStore,write===undefined?'readonly':'readwrite'),store=tx.objectStore(catalogStore),req=write===undefined?store.get('active'):store.put(write,'active');let value;req.onsuccess=()=>value=req.result;tx.oncomplete=()=>{db.close();resolve(value)};tx.onerror=tx.onabort=()=>{db.close();reject(tx.error||req.error)}})
 }
 async function loadCatalog(){
+ try{return await fetchPublished()}catch(e){console.warn('Cloud catalog unavailable; fallback',e)}
  try{const local=await localCatalog();if(local)return {data:normalizeCatalog(local),source:'studio'}}catch(e){console.warn('Studio catalog unavailable',e)}
  try{const res=await fetch('catalog.json',{cache:'no-store'});if(res.ok)return {data:normalizeCatalog(await res.json()),source:'published'}}catch(e){console.warn('Published catalog unavailable',e)}
  return {data:normalizeCatalog(defaultCatalog()),source:'default'};
