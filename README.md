@@ -55,3 +55,6 @@ src/data.js — baseline groups and waves; src/catalog.js — shared catalog/sto
 - Casting dock has four labeled cards, explicit per-draw/batch costs, current ticket/diamond totals, focus progress, dynamic gamble chance, and a mobile two-column layout.
 - Opt-in auto casting for normal/group/gamble (one attempt per 0.8 active real-time seconds, independent of game speed). Waits for tickets and resumes automatically, stops when toggled off, mode change, game end, new run or resumed save. Pauses during dialogs/reveals, dragging, selection popup, and hidden tab. Automatic casts preserve current unit selection; targeted diamond casting remains manual.
 - Logic tests passed for unlock tiers, locked-slot rejection, old save migration, agency unlock, capacity swap, all three auto casting modes, ticket limits, pause guards and selection retention. Browser visual QA not yet performed.
+
+## Native desktop preview — NEON ENCORE
+A separate real Java client is under [native/](native/README.md). The existing Pages game and Creator Studio remain unchanged. Native desktop artifacts are built by the Native desktop workflow; feature parity and mobile release are not yet complete.
