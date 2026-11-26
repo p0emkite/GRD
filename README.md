@@ -58,3 +58,6 @@ src/data.js — baseline groups and waves; src/catalog.js — shared catalog/sto
 
 ## Native desktop preview — NEON ENCORE
 A separate real Java client is under [native/](native/README.md). The existing Pages game and Creator Studio remain unchanged. Native desktop artifacts are built by the Native desktop workflow; feature parity and mobile release are not yet complete.
+
+## v0.9.3 — NEON ENCORE (web)
+The browser edition is the primary GRD game. JavaScript/Canvas 2D and CSS deliver the new navy/mint concert arena, dimensional stage tiles, animated beams and track lighting, high-DPI rendering (up to 2x), portrait frames, combat sparks, and redesigned lobby, HUD, casting, bench, dialogs and reveal presentation. Existing game rules, accounts, studio and save data are unchanged; all existing DOM IDs and inline action bindings were retained. The separate native prototype is archived in native/ for reference, not required for playing GRD. Renderer smoke test covered high-DPI resizing, selected/dragging units, open/locked tiles, enemies and effects using a mock Canvas context; live device visual QA is separate.
