@@ -1,4 +1,4 @@
-# GRD — v0.6 / Loop Arena & Bench
+# GRD — v0.7 / Spotlight & Balance
 Static K-pop random defense game. GitHub Pages: main / root.
 
 - Game: index.html
@@ -21,3 +21,12 @@ src/data.js — baseline groups and waves; src/catalog.js — shared catalog/sto
 - Closed clockwise track: enemies loop until killed. Life/leak system removed. Defeat at 60 enemies or a boss exceeding its 75-second individual timer. Final victory requires all 30 batches cleared.
 - Existing wave HP/count, reward economy and group investment/evolution retained. Attack ranges adjusted for tile geometry; costs and boss timer provisional. Logic-only test coverage: capacity progression, cap enforcement, swap, bench return, merge, loop, defeat. Live browser QA and full-run balance not yet completed.
 - src/controls.js and src/bench.css implement stage controls and bench.
+
+## v0.7 — Spotlight & Balance
+- Action dock with one-click and up-to-five normal/group recruits; focus selector, persistent completion count, member collection/selection and one-member-missing alerts.
+- General casting costs 1 ticket; 65% missing-member branch (if any), otherwise full pool. Group casting costs 2 tickets for up to 5 members, 1 for 6+; missing-member branch 35% (2–3), 70% (4–5), 88% (6+). All branches can still yield duplicates via the full pool. Gamble costs 5: unconditional 18% one-star, 1.8% two-star, 0.2% three-star, 80% failure.
+- Group base damage = 38 × member count^1.28 × limited original-data factor. Deployed duplicate group damage factors, sorted by star then acquisition order: 100%, 72%, 50%, 35%, 27%, 20% thereafter. Shared gold upgrades and deterministic star merges retained.
+- Team training: eight levels, +12 percentage points of base attack multiplier each. Costs 1500/2500/4000/6000/8500/11500/15000/19000 G. Late kill/wave gold reduced; original wave HP, timing, 18-slot capacity and three currencies unchanged.
+- Nine group-specific song-title-inspired combat skills (no songs bundled); generic skill by role for additional groups. Damage/critical numbers, area bursts, skill labels, boss banners and kill streaks.
+- Simulation QA: fixed seeds 21/73/119, automated recruitment/merges/upgrades/expansion, no manual positioning, optional training from R12. Final training-enabled run results: normal 3/3 clears, Davichi-only 0/3 (all R30), gamble 2/3, IZ*ONE-only 3/3, Davichi opening then general at R8 3/3. This is a small tuning sample, not a live playtest or a proof of equal balance. All nine skills, batch purchases, duplicate penalty, training and merge preservation passed logic tests.
+- src/balance.js contains tuning and combat skills; src/update.css contains new UI. Existing creator studio assets retained. Deployed browser graphics/audio and mobile touch QA still pending.
