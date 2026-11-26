@@ -21,6 +21,9 @@ function normalDraw(){const missing=members.filter(n=>!state.units.some(u=>u.typ
 function gambleTier(){const r=runRandom();return r<.01?3:r<.1?2:1}
 function duplicateFactor(u){if(u.slot<0)return 1;const copies=state.units.filter(v=>v.slot>=0&&v.type==='group'&&v.gid===u.gid).sort((a,b)=>b.level-a.level||a.id-b.id);const i=copies.findIndex(v=>v.id===u.id);return [1,.65,.38,.23,.16][i]??.10}
 function groupBase(g){if(g.combat?.damage!=null)return g.combat.damage;const n=g.members.length,raw=originalGroupRaw[g.id],factor=raw?Math.max(.94,Math.min(1.06,Math.pow(raw/500,.08))):1;return 38*Math.pow(n,1.28)*factor}
+// Shared by the game engine and Creator Studio: unmodified base combat rules.
+function groupAttackProfile(role){return role==='저격'?{interval:1.05,range:320}:role==='광역'?{interval:1.05,range:205}:role==='감속'?{interval:.85,range:200}:role==='지원'?{interval:.65,range:195}:{interval:.75,range:220}}
+function recommendedGroupCombat(g){if(!g.members?.length)throw Error('멤버 이름을 먼저 입력하세요.');const bare={...g,combat:{}},base=groupAttackProfile(g.role);const original=groups.find(x=>x.id===g.id),skill=Object.hasOwn(skillProfiles,g.id)&&original?.role===g.role?groupSkill(bare):g.role==='속사'?{name:'TEMPO UP',kind:'tempo',every:5,power:1.45}:groupSkill({...bare,id:''});return {damage:Math.round(groupBase(bare)*100)/100,...base,skill:{...skill,radius:skill.radius??110}}}
 const trainingCosts=[1500,2500,4000,6000,8500,11500,15000,19000];
 function trainTeam(){if(!state||state.done||state.paused)return false;const cost=trainingCost();if(!cost||state.gold<cost)return false;state.gold-=cost;state.training++;log('TEAM TRAINING +'+state.training,'good');render();return true}
 function teamBoost(){return 1+.12*(state.training||0)}

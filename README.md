@@ -72,3 +72,7 @@ Casting is permanently visible at the top of the right column on desktop (two-co
 - 40 augments (common/rare/legend), six special enemy archetypes with distinct mechanics and art, revised boss warning effects, duplicate penalties, difficulty curves and late economy. Current leaderboard remains client-reported; historical scores from prior rules are not directly comparable.
 - Original SVG venue, portrait frame and enemy atlases, PixiJS 8.14.3 WebGL sprite/particle layer loaded asynchronously from pinned CDN, Canvas HD fallback uses the same artwork. Existing studio media, independent accounts, browser play and viewport-first layout remain. No shortcut/context-menu/fullscreen changes.
 - Logic checks passed; initial Normal trials 11/15 clears, after higher-mode retuning HARD 3/3, HELL 2/3 and ENDLESS R52–56 (default 9-group catalog; mocked presentation, scripted strategy). Live GPU/browser testing is a separate check.
+
+## Creator Studio 2.1
+- Reusable generation, agency and country dropdown choices, with add dialogs. Extra choices persist in catalog metadataOptions after normal public save; existing group values are preserved.
+- One-click combat/skill recommendations use the same base attack, interval, range and default skill profiles as the game. Type-specific fields and descriptions follow actual combat behavior; reset restores automatic defaults. No balance changes or catalog publication by the code update itself.

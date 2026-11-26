@@ -14,6 +14,8 @@ function safeAsset(v,kind='image'){
 }
 function numField(v,min,max){if(v===undefined||v===null||v==='')return null;const n=Number(v);if(!Number.isFinite(n)||n<min||n>max)throw Error('전투 설정 범위를 확인하세요.');return n}
 function normalizeCombat(v={}){const skill=v.skill||{};const kind=['tempo','blast','pierce','critical','freeze','cheer'].includes(skill.kind)?skill.kind:'';return {damage:numField(v.damage,1,100000),interval:numField(v.interval,.15,10),range:numField(v.range,40,900),skill:kind?{name:String(skill.name||'SHOWTIME').slice(0,80),kind,every:Math.round(numField(skill.every,1,50)??5),power:numField(skill.power,.1,10)??1.5,radius:numField(skill.radius,20,500)??110}:null}}
+const metadataLimits={generation:24,agency:80,country:40};
+function normalizeMetadataOptions(raw,list){const out={};for(const key of Object.keys(metadataLimits)){const values=Array.isArray(raw?.[key])?raw[key]:[];out[key]=[...new Set([...values,...list.map(g=>g[key])].map(v=>String(v||'').trim()).filter(v=>v&&v.length<=metadataLimits[key]))].slice(0,1000)}return out}
 function normalizeCatalog(raw){
  if(!raw||!Array.isArray(raw.groups)||!raw.groups.length||raw.groups.length>500)throw Error('그룹은 1~500개가 필요합니다.');
  const seen=new Set(),names=new Set();
@@ -29,7 +31,7 @@ function normalizeCatalog(raw){
   return {id,name,members:ms,role:roleOptions.includes(g.role)?g.role:'기본',color:/^#[0-9a-f]{6}$/i.test(g.color||'')?g.color:'#e1b0ff',sub:!!g.sub,generation:String(g.generation||'').slice(0,24),agency:String(g.agency||'').slice(0,80),country:String(g.country||'').slice(0,40),combat:normalizeCombat(g.combat||{}),photo:safeAsset(g.photo),logo:safeAsset(g.logo),reveal:safeAsset(g.reveal),audio:safeAsset(g.audio,'audio')};
  });
  const photos=Object.create(null);for(const n of names){const p=raw.memberPhotos&&Object.hasOwn(raw.memberPhotos,n)?raw.memberPhotos[n]:'';if(p)photos[n]=safeAsset(p)}
- return {version:1,groups:list,memberPhotos:photos};
+ return {version:1,groups:list,memberPhotos:photos,metadataOptions:normalizeMetadataOptions(raw.metadataOptions,list)};
 }
 function openCatalogDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open(catalogDB,1);req.onupgradeneeded=()=>req.result.createObjectStore(catalogStore);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);req.onblocked=()=>reject(Error('콘텐츠 저장소가 잠겨 있습니다.'))})}
 async function localCatalog(write){
