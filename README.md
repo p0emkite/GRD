@@ -49,3 +49,9 @@ src/data.js — baseline groups and waves; src/catalog.js — shared catalog/sto
 ## v0.9.1 — Independent display names
 - New accounts choose a unique nickname (2–16 Korean/Latin letters, digits, underscore; case-insensitive uniqueness). Existing accounts choose or edit it in Producer Profile. Login ID remains unchanged and is not used as a public display name.
 - Scores require the registered nickname; renaming updates previous public scores. The verified owner account has been separately authorized for GRD Studio. SQL role/rename/score tests were rolled back after verification.
+
+## v0.9.2 — Stage Unlocks & Auto Casting
+- Physical tile unlocks replace independent free placement: the original automatic placement priority is the unlock order (8/10/12/14/16/18), including the agency augment. Mint tiles are open; gray hatched lock tiles reject placement. Existing saves relocate units from newly locked tiles to open vacancies or the bench if necessary.
+- Casting dock has four labeled cards, explicit per-draw/batch costs, current ticket/diamond totals, focus progress, dynamic gamble chance, and a mobile two-column layout.
+- Opt-in auto casting for normal/group/gamble (one attempt per 0.8 active real-time seconds, independent of game speed). Waits for tickets and resumes automatically, stops when toggled off, mode change, game end, new run or resumed save. Pauses during dialogs/reveals, dragging, selection popup, and hidden tab. Automatic casts preserve current unit selection; targeted diamond casting remains manual.
+- Logic tests passed for unlock tiers, locked-slot rejection, old save migration, agency unlock, capacity swap, all three auto casting modes, ticket limits, pause guards and selection retention. Browser visual QA not yet performed.
