@@ -1,28 +1,14 @@
-# IDOL RANDOM DEFENSE v0.4
+# GRD — v0.5 / Creator & Merge
+Static K-pop random defense game. GitHub Pages: main / root.
 
-걸랜디 × 카드걸랜디 기반 독립형 웹게임. 별도 빌드/설치/서버가 필요하지 않습니다.
+- Game: index.html
+- Creator Studio: studio.html — edit groups, members, photos, logos, full-screen debut art and audio; URL or file upload.
+- Studio save is browser-local (IndexedDB, same origin). Export catalog.json and commit it at repository root for shared publication; browser-local drafts take precedence. Use only media you have rights to.
+- Round clock runs automatically; next wave button unlocks after the field and pending spawns are clear.
+- Member upgrades: deterministic Lv.1–8. Group evolution: two identical groups of equal star tier become one next tier (1★ + 1★ → 2★; 2★ + 2★ → 3★). No gold or chance for evolution; drag identical deployed groups together or use evolve button.
+- Group-specific gold upgrades: +0 to +7, shared by all copies of that group within the run; member invested gold becomes group-specific upgrade credit. Evolution retains the shared multiplier and credit. Temporary tuning: star attack multipliers 1 / 2.5 / 6.25; gold multiplier 1 + 0.35 × upgrade level.
+- First group acquisition per run (including gamble) pauses combat for up to 6.5 seconds with full-screen reveal; skip/Escape resumes. Repeat acquisitions display group logo or name with audio on field for 2.8 seconds without pausing. Unconfigured assets fall back to text; audio requires a valid registered clip and browser playback permission.
+- Original SCX-derived wave values and existing game economy are unchanged except group evolution and group upgrades. Full-round balance and live browser QA remain to be done.
 
-## 실행
-- index.html을 브라우저로 열거나 VS Code Live Server로 실행.
-- GitHub Pages: 저장소 루트에 모든 파일과 src 폴더를 올리고 Settings → Pages → Deploy from a branch → main / (root) → Save.
-
-## v0.3
-- 자동 웨이브 유지. 첫 준비 및 모든 활성 웨이브 종료 후 즉시 시작 가능. 적 또는 미출현 적이 있으면 비활성화.
-- 공격 쿨타임 0 하한 및 게이지 0~100% 제한.
-- 밝은 전략 게임 UI, 화면 비율 유지, 전투를 가리지 않는 최근 영입 알림.
-- 기존 44명, 9개 조합, 재화 및 원작 환산 데이터 유지.
-
-## 구조
-- index.html: 화면 구조
-- src/style.css: 디자인
-- src/data.js: 그룹/원작 웨이브/기본 데이터
-- src/game.js: 상태, 전투, 캐스팅, 조합, 강화 및 렌더링
-
-## 유의
-원작 SCX 자체와 사진/음원은 포함하지 않았습니다. 원작 환산 수치는 v0.2의 값으로 실제 스타크래프트 엔진과 다릅니다. 전체 라운드 밸런스는 아직 미검증입니다. 공개 배포 전 이름·이미지·음원 사용 권리를 별도로 검토하세요.
-
-## v0.4 — Starlight Tour / visual overhaul
-- ITM-inspired concert lighting, metallic catwalks, glowing enemy sprites, stylized original vector idol avatars, rarity frames and attack bursts.
-- Tabbed game controls, jewel-like currency HUD, casting panels and card collection. Responsive layout for desktop and narrow screens.
-- src/visuals.js handles canvas artwork and menu tabs; existing data, combat timing, casting, upgrade and merge rules preserved.
-- No celebrity photos, licensed music or external graphics included. Browser playtest and full balance QA still required.
+## Files
+src/data.js — baseline groups and waves; src/catalog.js — shared catalog/storage; src/game.js — game logic; src/visuals.js — field rendering; src/reveal.js and reveal.css — debut effects; src/studio.js — creator controls; src/style.css — UI.

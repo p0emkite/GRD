@@ -1,5 +1,5 @@
 'use strict';
-// Original vector artwork, rendered locally. No external art or photo dependencies.
+// Concert backdrop and photo tokens; custom images are loaded from the creator catalog.
 let stageBackdrop;
 function vRound(c,x,y,w,h,r,fill,stroke,line=1){c.beginPath();c.roundRect(x,y,w,h,r);if(fill){c.fillStyle=fill;c.fill()}if(stroke){c.strokeStyle=stroke;c.lineWidth=line;c.stroke()}}
 function vOval(c,x,y,rx,ry,fill,stroke,line=1){c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);if(fill){c.fillStyle=fill;c.fill()}if(stroke){c.strokeStyle=stroke;c.lineWidth=line;c.stroke()}}
@@ -25,21 +25,15 @@ function buildStage(){
  return layer;
 }
 function unitHue(u){return u.type==='group'?groupOf(u).color:['#bd9bff','#ff9ddc','#91e5ff','#8af1cc','#ffd89b','#ffa9ad'][hashName(u.name)%6]}
+const portraitCache=new Map();
+function cachedPortrait(url){if(!url)return null;if(!portraitCache.has(url)){const i=new Image();i.src=url;portraitCache.set(url,i)}const i=portraitCache.get(url);return i.complete&&i.naturalWidth?i:null}
 function drawIdol(c,u,x,y,alpha=1){
- c.save();c.globalAlpha=alpha;const color=unitHue(u),rank=rankColors[u.level-1],isGroup=u.type==='group',seed=hashName(nameOf(u));
- vOval(c,x,y+20,29,10,'#080517a0');c.shadowColor=color;c.shadowBlur=u.id===selected?16:7;
- vOval(c,x,y+14,25,9,'#362447',rank,2);c.shadowBlur=0;vOval(c,x,y+10,22,7,'#584170',color,1);
- // Stylized original chibi stage performers. Color and hair silhouettes vary by member.
- function idol(px,py,scale,index){c.save();c.translate(px,py);c.scale(scale,scale);
- const hair=['#372438','#725047','#b58666','#3a2c5b','#29344e'][(seed+index)%5];const skin=['#ffe3cc','#f5cfb7','#f8d9c6'][(seed+index)%3];
- vOval(c,0,-8,11,15,hair,'#160f2c',1);vRound(c,-8,4,16,13,5,color,'#fff0f6',.8);
- vPoly(c,[[-9,6],[-13,15],[-8,17],[-5,11]],skin);vPoly(c,[[9,6],[13,12],[9,16],[5,11]],skin);
- vPoly(c,[[-7,13],[7,13],[12,21],[-12,21]],color,'#2b2049',.8);vRound(c,-7,19,5,7,2,'#26213d');vRound(c,2,19,5,7,2,'#26213d');
- vOval(c,0,-7,9,10,skin);vPoly(c,[[-10,-9],[-9,-17],[-2,-20],[8,-16],[11,-7],[5,-12],[0,-14],[-6,-9]],hair);vOval(c,-3,-6,1.1,1.7,'#372c49');vOval(c,3,-6,1.1,1.7,'#372c49');vOval(c,0,-2,1.4,.7,'#d78b98');vStar(c,7,-16,3,'#fff3a6');vStar(c,0,9,3,'#fff1cf');c.restore();}
- if(isGroup){idol(x-12,y-6,.68,0);idol(x+12,y-6,.68,1);idol(x,y-5,.86,2)}else idol(x,y-7,1,0);
- c.textAlign='center';c.textBaseline='middle';vRound(c,x-29,y+23,58,15,5,'#170e2ae8',rank,.8);c.font='bold 10px system-ui';c.fillStyle='#fff3ff';c.fillText(nameOf(u),x,y+30,54);
- vRound(c,x-27,y-31,24,12,5,'#170e2a',rank,.9);c.font='bold 9px system-ui';c.fillStyle=rank;c.fillText('Lv.'+u.level,x-15,y-25);
- vRound(c,x-23,y+40,46,3,1.5,'#120a22');const f=Math.min(1,Math.max(0,1-u.cd/stats(u).interval));if(f>0)vRound(c,x-23,y+40,46*f,3,1.5,'#a6f4d1');c.restore();
+ c.save();c.globalAlpha=alpha;const group=u.type==='group',color=unitHue(u),rank=group?['#d5b8ff','#b5e7ff','#ffdb82'][u.level-1]:rankColors[u.level-1],radius=group?24:21;
+ vOval(c,x,y+20,27,9,'#080517a0');c.shadowColor=rank;c.shadowBlur=u.id===selected?17:5;vOval(c,x,y+2,radius+3,radius+3,'#180d2d',rank,2.4);c.shadowBlur=0;
+ c.save();c.beginPath();c.arc(x,y+2,radius,0,Math.PI*2);c.clip();const art=cachedPortrait(portraitURL(u));if(art){const d=Math.min(art.naturalWidth,art.naturalHeight);c.drawImage(art,(art.naturalWidth-d)/2,(art.naturalHeight-d)/2,d,d,x-radius,y+2-radius,radius*2,radius*2)}else{const grad=c.createLinearGradient(x-radius,y-radius,x+radius,y+radius);grad.addColorStop(0,color);grad.addColorStop(1,'#302041');c.fillStyle=grad;c.fillRect(x-radius,y+2-radius,radius*2,radius*2);c.font='bold 13px system-ui';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#fff';c.fillText(nameOf(u).slice(0,3),x,y+2,radius*1.8)}c.restore();
+ c.textAlign='center';c.textBaseline='middle';vRound(c,x-29,y+26,58,14,5,'#170e2ae8',rank,.8);c.font='bold 10px system-ui';c.fillStyle='#fff3ff';c.fillText(nameOf(u),x,y+33,54);
+ const badge=group?'★'.repeat(u.level):'Lv.'+u.level;c.font='bold 10px system-ui';const w=Math.max(26,c.measureText(badge).width+8);vRound(c,x-w/2,y-30,w,12,5,'#170e2a',rank,.9);c.fillStyle=rank;c.fillText(badge,x,y-24);
+ vRound(c,x-23,y+41,46,3,1.5,'#120a22');const f=Math.min(1,Math.max(0,1-u.cd/stats(u).interval));if(f>0)vRound(c,x-23,y+41,46*f,3,1.5,'#a6f4d1');c.restore()
 }
 function drawArena(){
  if(!stageBackdrop)stageBackdrop=buildStage();ctx.clearRect(0,0,900,420);ctx.drawImage(stageBackdrop,0,0);
