@@ -79,3 +79,6 @@ Casting is permanently visible at the top of the right column on desktop (two-co
 
 ## v0.11 / Season 02
 Manual group ultimates, quality settings, three arena skins, mobile detail sheet, explicit cloud save/restore and IndexedDB migration, Season 02 score namespace, Studio 3.0 CSV import and catalog audit, custom hidden recipes/synergy pairs and ultimate controls. Legacy rankings remain available. The balance audit is a base-stat/expected recruitment model, not a full wave simulation. Cloud saves are explicit snapshots (not simultaneous multiplayer sync).
+
+## v0.11.2 — Premium venue and art direction
+A real orthographic Three.js stadium with modeled trusses, audience, stage platforms, LED rails, PBR materials and baked high-resolution texture; three venue skins retain exact existing collision and placement geometry. Temporary WebGL rendering is disposed after baking; low quality and missing WebGL/CDN use the previous Canvas art. Original crest, concert key visual and unified UI art. No gameplay or account changes.
