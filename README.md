@@ -94,3 +94,6 @@ All 40 performance augments now have individual SVG pictograms, with rarity, tit
 
 ### v0.12.2 — Battle polish
 Removed targeted group casting (including automation); normal, gamble and diamond choice remain. Contract perk now increases missing-member probability. Repeat debut 300ms, logo only, first debut audio uses game BGM volume. Added group rank impact, role/skill/ultimate SFX, auto ultimate, wordmark, stable radial buttons, and coordinate-based drag merge. Existing locked cards remain protected. Season 03 stays active.
+
+### v0.12.3 — Member recasting
+Spend the normal casting cost to replace an unlocked member with a different random member in the same slot, even on a full board. Standard missing-member draw weighting remains. No sale refund; level and invested gold reset (confirmation for upgraded members). Group units and locked members cannot be recast. Radial menu center remains clear for dragging.

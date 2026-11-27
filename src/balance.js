@@ -15,7 +15,7 @@ function groupSkill(g){if(g.combat?.skill)return g.combat.skill;return Object.ha
 function focusGroup(){return groups.find(g=>g.id===state.focusId)||groups[0]}
 function setFocus(id){if(!state||state.done||state.paused||!groups.some(g=>g.id===id))return;state.focusId=id;render()}
 function castCost(kind){return kind==='normal'?100:kind==='gamble'?500:0}
-function normalDraw(){const missing=members.filter(n=>!state.units.some(u=>u.type==='member'&&u.name===n));return pick(missing.length&&runRandom()<Math.min(.95,.65+.15*perk('talent')+.10*perk('contract'))?missing:members)}
+function normalDraw(exclude=null){const pool=exclude===null?members:members.filter(n=>n!==exclude);if(!pool.length)return null;const missing=pool.filter(n=>!state.units.some(u=>u.type==='member'&&u.name===n));return pick(missing.length&&runRandom()<Math.min(.95,.65+.15*perk('talent')+.10*perk('contract'))?missing:pool)}
 function gambleTier(){const r=runRandom();return r<.01?3:r<.1?2:1}
 function duplicateFactor(u){if(u.slot<0)return 1;const copies=state.units.filter(v=>v.slot>=0&&v.type==='group'&&v.gid===u.gid).sort((a,b)=>b.level-a.level||a.id-b.id);const i=copies.findIndex(v=>v.id===u.id);return [1,.65,.38,.23,.16][i]??.10}
 function groupBase(g){return g.combat?.damage??defaultGroupDamage(g)}

@@ -42,7 +42,7 @@ for(const [name,engine,config] of cases){
  await page.touchscreen.tap(b.x+b.width*pos.x/900,b.y+b.height*pos.y/420);
  await page.locator('#unitWheel').waitFor({state:'visible',timeout:5000});
  assert.equal(await page.evaluate(()=>selected),id);
- assert.equal(await page.locator('#unitWheel .wheel-action').count(),4);
+ assert.equal(await page.locator('#unitWheel .wheel-action').count(),5);
  await page.locator('[data-wheel="lock"]').tap();assert.equal(await page.evaluate(id=>state.units.find(u=>u.id===id).locked,id),true);
  await page.locator('[data-wheel="lock"]').tap();assert.equal(await page.evaluate(id=>state.units.find(u=>u.id===id).locked,id),false);
  const gold=await page.evaluate(()=>state.gold);await page.locator('[data-wheel="sell"]').tap();
