@@ -1,0 +1,63 @@
+/* v0.12.4: clean battle-first layout */
+header .brand h1.grd-wordmark,.hero-lobby h2.grd-wordmark{font-style:normal;font-weight:900;color:#f5f0ff;letter-spacing:-.045em;line-height:1.2;text-shadow:0 2px 9px #070b1d70}
+header .brand h1.grd-wordmark span,.hero-lobby h2.grd-wordmark span{font:inherit;letter-spacing:inherit;color:#f0d7ae}
+header .brand h1.grd-wordmark{font-size:24px}
+header .header-actions{margin-left:auto;flex:none;gap:9px;order:0}
+header .header-actions button{display:flex;align-items:center;justify-content:center;min-height:43px;min-width:54px;padding:6px 14px;border-radius:10px;background:linear-gradient(155deg,#27334a,#101727);border:1px solid #a2a6ce50;box-shadow:inset 0 1px #e8efff25,0 2px 8px #0005;font-size:18px;font-weight:850}
+header #accountBtn{max-width:min(250px,34vw);min-width:90px;display:block;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
+header #settingsBtn{padding:6px 12px;color:#dae5ff}
+.hero-lobby{padding:44px 16px 24px;min-height:115px;display:flex;align-items:center;justify-content:flex-start}
+.hero-lobby h2.grd-wordmark{font-size:clamp(27px,4vw,47px);margin:0;word-break:keep-all}
+.hero-lobby #setupAccount{max-width:42%;top:8px;right:8px}
+#tourSetup .setup-start-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:stretch}
+#tourSetup .setup-start-actions button{min-width:0;width:100%;height:47px;min-height:47px;padding:8px;font-size:17px;letter-spacing:0;font-weight:900;background:linear-gradient(110deg,#b8a8f0,#efe0ff 43%,#ffe6b0 84%,#fff4d5);color:#201c34;border:1px solid #f4dcff;box-shadow:0 3px 0 #85749b,0 6px 15px #080b1980}
+#tourSetup .setup-start-actions button:disabled{opacity:.45;filter:saturate(.65);cursor:not-allowed}
+.arena{gap:7px}.battlehud{flex:none}
+.board-shell{display:flex;align-items:center;justify-content:center;min-height:0;min-width:0}
+.battle-deck{display:flex;flex-direction:column;gap:6px;min-width:0;width:100%;flex-shrink:0}
+.battle-deck .board{width:100%;max-width:100%}
+.battle-top{display:flex;justify-content:space-between;align-items:center;gap:8px;min-width:0}
+.battle-top .wallet{flex:0 1 auto;display:flex;align-items:center;flex-wrap:nowrap;width:auto;justify-content:flex-start;gap:8px}
+.battle-top .wallet .stat{min-width:84px;min-height:40px;padding:5px 12px;flex:none;gap:6px}
+.battle-top .wallet .stat b{font-size:26px;line-height:1.05;white-space:nowrap}
+.battle-top .wallet .currency-gold b{color:#ffda9a}.battle-top .wallet .currency-dia b{color:#bdeaff}
+.battle-top .wave-info{margin-left:auto;justify-content:flex-end;align-items:center;gap:5px}
+.battle-toolbar{display:flex;align-items:stretch;gap:8px;width:100%;min-width:0}
+.battle-toolbar .controls{flex:0 0 auto;display:flex;flex-wrap:nowrap;margin:0;gap:5px;align-items:center}
+.battle-toolbar .controls button{min-height:40px;padding:5px 10px;font-size:13px;white-space:nowrap}
+.battle-toolbar .stage-control{flex:1 1 180px;min-width:0;margin:0;padding:5px 8px;gap:8px;display:flex;align-items:center}
+.battle-toolbar .stage-cap{flex:1 1 auto;min-width:45px}
+.battle-toolbar #expandStage{min-height:36px;padding:5px 9px;white-space:nowrap;flex:none}
+.battle-toolbar .stage-cap span{white-space:nowrap}
+.notice-strip{height:29px;min-height:25px;flex:none}
+.notice-strip:has(#notices:empty){visibility:hidden;height:0;min-height:0;padding:0;border:0;overflow:hidden;margin:0}
+.ultimate-strip{flex:none;min-height:35px}
+.studio-footer{display:flex;justify-content:flex-end;align-items:center;flex:none;order:10;padding:4px 5px 0;margin-top:auto}
+.studio-footer .studio-link{display:inline-block!important;margin:0;font-size:10px;letter-spacing:.04em;color:#9eacc7;opacity:.78;text-decoration:none}
+.studio-footer .studio-link:hover{color:#f0d7ae;opacity:1}
+.board .selectpop{z-index:8}
+@media(min-width:901px) and (min-height:560px){
+ .board-shell{flex:1 0 230px;container-type:size;min-height:230px}
+ .battle-deck{width:min(100cqw,calc(max(120px,100cqh - 100px) * 900 / 420))}
+ .right>.studio-footer{order:10}
+}
+@media(max-width:900px){
+ header{justify-content:space-between;flex-wrap:nowrap;gap:6px}
+ header .brand h1.grd-wordmark{font-size:clamp(15px,3.9vw,23px);max-width:none;white-space:nowrap}
+ header .header-actions{gap:5px}header .header-actions button{min-height:40px;font-size:14px;min-width:42px;padding:5px 8px}header #accountBtn{min-width:52px;max-width:27vw}header #settingsBtn{padding:5px 8px}
+ .battlehud,.touch-portrait .battlehud{order:0}.rookie-guide,.touch-portrait .rookie-guide{order:1}.board-shell,.touch-portrait .board-shell{order:2;flex:none;container-type:normal;min-height:0}
+ .battle-deck{width:100%;gap:5px}
+ .battle-top{gap:4px}.battle-top .wallet{gap:4px}.battle-top .wallet .stat{min-width:53px;min-height:32px;padding:4px 6px;gap:3px}.battle-top .wallet .stat b{font-size:20px}.battle-top .wallet .currency-gold span{font-size:12px}.battle-top .wallet .currency-dia svg{width:20px;height:18px}
+ .battle-top .wave-info{gap:3px}.battle-top .wave-info span{padding:3px 5px;font-size:9px}.battle-top #remain{display:none}
+ .battle-toolbar{flex-wrap:wrap;gap:4px}.battle-toolbar .controls{flex:1 1 100%;justify-content:flex-start;gap:4px}.battle-toolbar #nextWave{margin-left:auto}.battle-toolbar .controls button{min-height:38px;font-size:12px;padding:4px 8px}.battle-toolbar .stage-control{flex:1 1 100%}.battle-toolbar #expandStage{min-height:38px}
+ .boss-timer,.touch-portrait .boss-timer{order:3}.wave-timer,.touch-portrait .wave-timer{order:4}.ultimate-strip,.touch-portrait .ultimate-strip{order:5}.mobile-move-row,.touch-portrait .mobile-move-row{order:6}.right>.cast-dock,.touch-portrait .right>.cast-dock{order:7}.detail,.touch-portrait .detail{order:8}.notice-strip,.touch-portrait .notice-strip{order:9}.right>.game-tabs,.touch-portrait .right>.game-tabs{order:10}.right>.side-screen,.touch-portrait .right>.side-screen{order:11}.studio-footer,.touch-portrait .studio-footer{order:12;margin-top:0}
+ .hero-lobby{min-height:100px;padding:42px 12px 18px}.hero-lobby h2.grd-wordmark{font-size:clamp(24px,6.8vw,39px)}
+}
+@media(max-width:375px){header .brand-emblem{width:27px;height:27px}header .brand{gap:5px}header .brand h1.grd-wordmark{font-size:15px}header #accountBtn{max-width:23vw}header #settingsBtn{min-width:35px}.battle-top .wallet .stat b{font-size:18px}}
+@media(pointer:coarse) and (orientation:landscape){
+ .touch-landscape header .brand h1.grd-wordmark{font-size:18px}.touch-landscape header .header-actions button{min-height:35px;padding:4px 9px;font-size:14px}
+ .touch-landscape .board-shell{flex:none;min-height:0;container-type:normal}.touch-landscape .battle-deck{width:100%}.touch-landscape .battle-deck .board{width:100%}
+ .touch-landscape .battle-toolbar .controls{flex:1 1 100%;flex-wrap:wrap}.touch-landscape .battle-toolbar .stage-control{flex:1 1 100%}.touch-landscape .battle-toolbar{flex-wrap:wrap}
+ .touch-landscape .battle-top .wallet .stat{min-height:30px;min-width:58px;padding:3px 6px}.touch-landscape .battle-top .wallet .stat b{font-size:19px}.touch-landscape .battle-top #remain{display:none}
+ .touch-landscape .studio-footer{order:10}
+}

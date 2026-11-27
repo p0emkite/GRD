@@ -97,3 +97,6 @@ Removed targeted group casting (including automation); normal, gamble and diamon
 
 ### v0.12.3 — Member recasting
 Spend the normal casting cost to replace an unlocked member with a different random member in the same slot, even on a full board. Standard missing-member draw weighting remains. No sale refund; level and invested gold reset (confirmation for upgraded members). Group units and locked members cannot be recast. Radial menu center remains clear for dragging.
+
+### v0.12.4 — Clean battle layout
+Korean wordmark (걸/랜/디 in champagne), equal start/resume buttons, currency and round counters directly above the board, speed/next wave/stage expansion directly below. Removed redundant decorative labels and duplicate casting balances. Account/settings enlarged in header; Studio link at lower right. Local automatic saves unchanged; safe return to lobby remains in settings. Empty ultimate hint removed.

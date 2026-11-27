@@ -25,6 +25,7 @@ for(const [name,engine,config] of cases){
  const visible=async id=>page.locator('#'+id).evaluate(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.left>=-1&&r.right<=innerWidth+1&&r.top>=0&&r.bottom<=innerHeight+1});
  for(const id of ['mobile-normal','mobile-gamble','mobile-choose','mobile-auto'])await check(visible(id),name+' quick button '+id);
  await check(page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'no horizontal overflow');
+ await check(page.evaluate(()=>{const r=s=>document.querySelector(s).getBoundingClientRect();return r('.battle-top').bottom<=r('#board').top&&r('.battle-toolbar').top>=r('#board').bottom&&!document.querySelector('header #gold')}),'battle wallet and controls order');
  const before=await page.evaluate(()=>state.gold);
  await page.locator('#mobile-normal').tap();
  assert.equal(await page.evaluate(()=>state.gold),before-100);

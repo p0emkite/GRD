@@ -5,8 +5,10 @@ try{
  const page=await browser.newPage({viewport:{width:1648,height:800}}),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.route('**/*',r=>r.request().url().startsWith(origin)?r.continue():r.abort());
- await page.goto(origin+'/index.html');await page.locator('#launchTour').click();await page.waitForFunction(()=>!state.setup);
+ await page.goto(origin+'/index.html');await page.locator('#launchTour').waitFor({state:'visible'});assert.equal(await page.locator('#resumeRun').isVisible(),true);const start=await page.locator('#launchTour').boundingBox(),resume=await page.locator('#resumeRun').boundingBox();assert.ok(Math.abs(start.width-resume.width)<1&&Math.abs(start.height-resume.height)<1,'equal start/resume');await page.locator('#launchTour').click();await page.waitForFunction(()=>!state.setup);
  await page.evaluate(()=>{state.nextIn=100;dismissGuide();render()});
+ const layout=await page.evaluate(()=>{const r=s=>document.querySelector(s).getBoundingClientRect();return {topGap:r('#board').top-r('.battle-top').bottom,controlGap:r('.battle-toolbar').top-r('#board').bottom,expandBottom:r('#expandStage').bottom,viewport:innerHeight,brand:document.querySelector('.brand h1').textContent,scroll:document.documentElement.scrollWidth-innerWidth,footer:r('.studio-footer').bottom,headerGold:!!document.querySelector('header #gold')}});
+ assert.ok(layout.topGap>=0&&layout.topGap<15&&layout.controlGap>=0&&layout.controlGap<15,'adjacent battle controls '+JSON.stringify(layout));assert.ok(layout.expandBottom<=layout.viewport&&layout.footer<=layout.viewport&&layout.scroll<=1&&!layout.headerGold);assert.equal(layout.brand,'걸그룹 랜덤 디펜스');assert.equal(await page.locator('.stage-tag,.board-legend,.arena>.head').count(),0);
  assert.equal(await page.locator('#group,#group5,#mobile-group').count(),0);
  assert.equal(await page.evaluate(()=>castCost('group')===0&&!cast('group')),true);
  await page.locator('#normal').click();
