@@ -18,7 +18,7 @@ for(const key of ['concert','broadcast','awards']){
  if(key!=='concert'){await page.evaluate(key=>{prefs.venueSkin=key;loadVenueSkin()},key);await page.waitForFunction(key=>!!premiumStageArt&&premiumStageKey===key,key,{timeout:90000})}
  const stat=await page.evaluate(()=>{const art=premiumStageArt,c=art.getContext('2d'),w=art.width,h=art.height;const samples=[];for(let i=0;i<15;i++){const p=c.getImageData(Math.floor(w*(.05+.061*i)),Math.floor(h*(.2+.05*(i%8))),1,1).data;samples.push([...p.slice(0,3)].join(','))}return {w,h,distinct:new Set(samples).size,signature:samples.join('|')}});
  assert.equal(stat.w,1800);assert.equal(stat.h,840);assert.ok(stat.distinct>=6,'render is not flat');seen.push(stat.signature);
- await page.screenshot({path:'art-qa/'+key+'.png'});console.log('PASS',key,stat.w,stat.h,stat.distinct);
+ const webp=await page.evaluate(()=>premiumStageArt.toDataURL('image/webp',.85).split(',')[1]);await fs.writeFile('art-qa/'+key+'.webp',Buffer.from(webp,'base64'));for(let i=0;i<webp.length;i+=8000)console.log('GRD_ART_'+key+'_'+(i/8000)+' '+webp.slice(i,i+8000));console.log('GRD_ART_DONE_'+key+' '+webp.length);await page.screenshot({path:'art-qa/'+key+'.png'});console.log('PASS',key,stat.w,stat.h,stat.distinct);
 }
 assert.equal(new Set(seen).size,3,'skin differentiation');
 const count=await page.evaluate(()=>state.tickets);await page.locator('#normal').click();assert.equal(await page.evaluate(()=>state.tickets),count-1);
