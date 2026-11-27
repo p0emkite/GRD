@@ -82,3 +82,6 @@ Manual group ultimates, quality settings, three arena skins, mobile detail sheet
 
 ## v0.11.2 — Premium venue and art direction
 A real orthographic Three.js stadium with modeled trusses, audience, stage platforms, LED rails, PBR materials and baked high-resolution texture; three venue skins retain exact existing collision and placement geometry. Temporary WebGL rendering is disposed after baking; low quality and missing WebGL/CDN use the previous Canvas art. Original crest, concert key visual and unified UI art. No gameplay or account changes.
+
+### v0.11.3 — Baked venue delivery
+All three 1800×840 WebP renders are included as local game assets; quality settings downsample the same art instead of dropping it. Three.js is only an optional fallback when the local asset is absent. The regular art regression runs with external requests blocked. Set GRD_BAKE=1 to test the original scene generator.

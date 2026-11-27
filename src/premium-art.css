@@ -55,3 +55,5 @@ button.primary,.next-wave{color:#1b2335;background:linear-gradient(115deg,#b6ecd
 .touch-portrait #mobileDock{background:#141e32f8;border-color:#b7afdb90}
 .touch-portrait .mobile-casts button{background:linear-gradient(130deg,#a6dccc,#e1f4eb)}.touch-portrait .mobile-casts button:nth-child(2){background:linear-gradient(130deg,#b1a1e8,#e9d7fb)}.touch-portrait .mobile-casts button:nth-child(3){background:linear-gradient(130deg,#d0ac76,#ffe6bc)}.touch-portrait .mobile-casts button:nth-child(4){background:linear-gradient(130deg,#9cbfe3,#d7eaff)}
 @media(prefers-reduced-motion:reduce){.hero-lobby,.bench-token,.pool-card{transition:none}}
+
+.premium-stage-ready #rendererStatus:after{content:' · 3D ART';color:#e5cfa8;font-weight:800}
