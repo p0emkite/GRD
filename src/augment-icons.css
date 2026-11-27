@@ -1,0 +1,14 @@
+/* Performance cards: original pictograms, centered name and readable effect. */
+#augmentDialog{width:min(760px,94vw)}
+#augmentChoices{gap:12px}
+#augmentChoices .augment-card{--augment-color:#a6f1d9;min-width:0;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;gap:8px;padding:12px 11px 16px;border-radius:12px}
+#augmentChoices .rarity-rare{--augment-color:#c7baff}
+#augmentChoices .rarity-legend{--augment-color:#ffdfa3}
+.augment-rarity{color:var(--augment-color)!important;font-size:10px!important;letter-spacing:.14em}
+.augment-medallion{width:80px;height:80px;flex:none;display:grid;place-items:center;position:relative;border-radius:50%;border:1px solid var(--augment-color);background:radial-gradient(circle,#34455e,#131d31 72%);color:var(--augment-color);box-shadow:0 0 18px color-mix(in srgb,var(--augment-color) 22%,transparent),inset 0 0 0 4px #121b2e,inset 0 0 0 5px color-mix(in srgb,var(--augment-color) 35%,transparent)}
+.augment-pictogram{width:49px;height:49px;filter:drop-shadow(0 0 4px color-mix(in srgb,var(--augment-color) 45%,transparent))}
+#augmentChoices .augment-card b{font-size:17px;color:#f8f3ff;line-height:1.2;word-break:keep-all}
+#augmentChoices .augment-effect{font-size:13px;line-height:1.4;color:#d7e3f4;word-break:keep-all;overflow-wrap:anywhere}
+#augmentChoices .augment-card:hover,#augmentChoices .augment-card:focus-visible{border-color:var(--augment-color);box-shadow:0 0 18px color-mix(in srgb,var(--augment-color) 40%,transparent)}
+@media(max-width:600px){#augmentChoices{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}#augmentChoices .augment-card{min-height:162px;padding:8px 4px;gap:6px} .augment-medallion{width:54px;height:54px}.augment-pictogram{width:34px;height:34px}#augmentChoices .augment-card b{font-size:13px}#augmentChoices .augment-effect{font-size:11px;word-break:normal;line-height:1.35}#augmentDialog{padding:10px}}
+@media(max-height:420px) and (orientation:landscape){#augmentChoices .augment-card{min-height:150px;gap:4px;padding:6px}.augment-medallion{width:54px;height:54px}.augment-pictogram{width:34px;height:34px}#augmentDialog h2{margin:4px 0 8px}}

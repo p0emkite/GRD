@@ -88,3 +88,6 @@ All three 1800×840 WebP renders are included as local game assets; quality sett
 
 ## v0.12 Season 03 — Board-only economy
 No bench; recruitment requires an open slot, including automatic, batch, gamble and diamond selection. Start 1,600G; normal 100G, group 100–200G, gamble 500G, base member resale 50G. Diamonds remain special currency. Prior saves convert only after confirmation; excess units settle at sale value and converted runs are excluded from new rankings. Ten-second first wave, hover stats, radial actions, sell zone, original synthesized music/SFX and independent audio toggles, automatic portrait crop with drag/wheel. No third-party NCS recordings bundled. Existing logo and full-screen reveal artwork retain original aspect ratio.
+
+### v0.12.1 — Performance icons and quick repeat reveal
+All 40 performance augments now have individual SVG pictograms, with rarity, title and effect in vertical order. Repeated group debut flash lasts 450ms (was 2.8s); only the initial 6.5s cinematic plays the registered debut track and owns the simulation pause.
