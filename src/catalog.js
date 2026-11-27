@@ -28,10 +28,10 @@ function normalizeCatalog(raw){
   const ms=g.members.map(n=>String(n).trim());
   if(!ms.length||ms.length>50||new Set(ms).size!==ms.length||ms.some(n=>!n||n.length>80))throw Error(name+'의 멤버 이름 또는 중복을 확인하세요.');
   ms.forEach(n=>names.add(n));
-  return {id,name,members:ms,role:roleOptions.includes(g.role)?g.role:'기본',color:/^#[0-9a-f]{6}$/i.test(g.color||'')?g.color:'#e1b0ff',sub:!!g.sub,generation:String(g.generation||'').slice(0,24),agency:String(g.agency||'').slice(0,80),country:String(g.country||'').slice(0,40),combat:normalizeCombat(g.combat||{}),photo:safeAsset(g.photo),logo:safeAsset(g.logo),reveal:safeAsset(g.reveal),audio:safeAsset(g.audio,'audio')};
+  return {id,name,members:ms,role:roleOptions.includes(g.role)?g.role:'기본',color:/^#[0-9a-f]{6}$/i.test(g.color||'')?g.color:'#e1b0ff',sub:!!g.sub,generation:String(g.generation||'').slice(0,24),agency:String(g.agency||'').slice(0,80),country:String(g.country||'').slice(0,40),combat:normalizeCombat(g.combat||{}),ultimate:normalizeUltimate(g.ultimate),photo:safeAsset(g.photo),logo:safeAsset(g.logo),reveal:safeAsset(g.reveal),audio:safeAsset(g.audio,'audio')};
  });
  const photos=Object.create(null);for(const n of names){const p=raw.memberPhotos&&Object.hasOwn(raw.memberPhotos,n)?raw.memberPhotos[n]:'';if(p)photos[n]=safeAsset(p)}
- return {version:1,groups:list,memberPhotos:photos,metadataOptions:normalizeMetadataOptions(raw.metadataOptions,list)};
+ return {version:1,groups:list,memberPhotos:photos,metadataOptions:normalizeMetadataOptions(raw.metadataOptions,list),rules:normalizeRules(raw.rules,list)};
 }
 function openCatalogDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open(catalogDB,1);req.onupgradeneeded=()=>req.result.createObjectStore(catalogStore);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);req.onblocked=()=>reject(Error('콘텐츠 저장소가 잠겨 있습니다.'))})}
 async function localCatalog(write){

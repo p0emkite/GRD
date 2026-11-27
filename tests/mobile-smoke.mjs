@@ -33,9 +33,9 @@ for(const [name,engine,config] of cases){
  await page.locator('#mobile-auto').tap();await check(page.evaluate(()=>state.autoCast),'auto on');
  await page.locator('#mobile-auto').tap();await check(page.evaluate(()=>!state.autoCast),'auto off');
  // Real taps, deterministic extra bench setup for movement/scroll checks.
- await page.evaluate(()=>{while(deployedCount()<capacity())addUnit('member',members[state.units.length%members.length]);for(let j=0;j<14;j++)addUnit('member',members[j%members.length]);render()});
+ await page.evaluate(()=>{while(deployedCount()<capacity())addUnit('member',members[state.units.length%members.length]);$('filter').value='all';for(let j=0;j<Math.min(14,members.length);j++)addUnit('member',members[j]);render()});
  await page.locator('#inventory').scrollIntoViewIfNeeded();
- await check(page.locator('#inventory').evaluate(e=>e.scrollWidth>e.clientWidth),'bench scrollable');
+ await check(page.locator('#inventory').evaluate(e=>e.children.length>4&&e.scrollWidth>e.clientWidth),'bench scrollable');
  await check(page.locator('.bench-token').first().evaluate(e=>getComputedStyle(e).touchAction==='pan-x'),'bench swipe enabled');
  if(name==='android-chromium'){
   const box=await page.locator('#inventory').boundingBox();const cdp=await context.newCDPSession(page);

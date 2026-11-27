@@ -76,3 +76,6 @@ Casting is permanently visible at the top of the right column on desktop (two-co
 ## Creator Studio 2.1
 - Reusable generation, agency and country dropdown choices, with add dialogs. Extra choices persist in catalog metadataOptions after normal public save; existing group values are preserved.
 - One-click combat/skill recommendations use the same base attack, interval, range and default skill profiles as the game. Type-specific fields and descriptions follow actual combat behavior; reset restores automatic defaults. No balance changes or catalog publication by the code update itself.
+
+## v0.11 / Season 02
+Manual group ultimates, quality settings, three arena skins, mobile detail sheet, explicit cloud save/restore and IndexedDB migration, Season 02 score namespace, Studio 3.0 CSV import and catalog audit, custom hidden recipes/synergy pairs and ultimate controls. Legacy rankings remain available. The balance audit is a base-stat/expected recruitment model, not a full wave simulation. Cloud saves are explicit snapshots (not simultaneous multiplayer sync).

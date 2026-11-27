@@ -14,9 +14,10 @@ function renderBench(){
  us.sort((a,b)=>order==='power'?dps(b)-dps(a)||a.id-b.id:order==='recent'?b.id-a.id:(b.type==='group')-(a.type==='group')||b.level-a.level||a.id-b.id);
  const stacks=new Map();for(const u of us){const key=JSON.stringify([u.type,u.type==='group'?u.gid:u.name,u.level,!!u.locked,!!u.mythic,u.mastery||0]);if(!stacks.has(key))stacks.set(key,[]);stacks.get(key).push(u)}
  $('count').textContent='대기 '+all.length+' · 보유 '+state.units.length;
- const signature=JSON.stringify([...stacks.values()].map(items=>[items.map(u=>u.id),items[0].level,items[0].mythic,items[0].mastery,items[0].type==='group'?progressFor(items[0].gid).level:0,items.map(u=>u.locked),items.some(u=>u.id===selected)]));
+ const oldScroll=root.scrollLeft;const signature=JSON.stringify([...stacks.values()].map(items=>[items.map(u=>u.id),items[0].level,items[0].mythic,items[0].mastery,items[0].type==='group'?progressFor(items[0].gid).level:0,items.map(u=>u.locked),items.some(u=>u.id===selected)]));
  if(root.dataset.signature===signature)return;root.dataset.signature=signature;
  root.innerHTML=stacks.size?[...stacks.values()].map(items=>{const u=items.find(u=>u.id===selected)||items[0];return '<button class="bench-token '+(u.id===selected?'selected':'')+'" data-unit="'+u.id+'" style="--rank:'+unitRank(u)+'" aria-label="'+esc(nameOf(u))+' '+items.length+'장">'+portraitMarkup(u)+(items.length>1?'<b class="stack-count">×'+items.length+'</b>':'')+'<strong>'+(u.locked?'🔒 ':'')+esc(nameOf(u))+'</strong><small>'+(u.type==='group'?(u.mythic?'MYTHIC +'+u.mastery:'★'.repeat(u.level))+' +'+progressFor(u.gid).level:'Lv.'+u.level)+'</small></button>'}).join(''):'<div class="empty-bench">—</div>';
+ root.scrollLeft=oldScroll;
 }
 function scrollBench(dir){$('inventory').scrollBy({left:dir*Math.max(180,$('inventory').clientWidth*.75),behavior:'smooth'})}
 

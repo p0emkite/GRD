@@ -57,7 +57,7 @@ function drawIdol(c,u,x,y,alpha=1){
 }
 function drawArena(){
  syncStageResolution();ctx.setTransform(stageScale,0,0,stageScale,0,0);ctx.clearRect(0,0,900,420);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(stageBackdrop,0,0,BOARD_W,BOARD_H);
- const t=performance.now()/1000;stageMotion(t);
+ const t=performance.now()/1000;if(qualityMode()!=='low')stageMotion(t);
  for(const [x,y,color] of [[path[0].x,path[0].y,'#9cf7dc']]){ctx.save();ctx.globalAlpha=.5+.25*Math.sin(t*3);ctx.shadowBlur=14;ctx.shadowColor=color;vOval(ctx,x,y,13,23,null,color,2);ctx.restore()}
  const chosen=state.units.find(u=>u.id===selected&&u.slot>=0);if(chosen){const s=slots[chosen.slot],r=stats(chosen).range;vOval(ctx,s.x,s.y,r,r,'#d5b2ff12','#e4bcff77',1.3)}
  const moving=drag&&drag.moved?state.units.find(u=>u.id===drag.id):null;

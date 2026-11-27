@@ -7,7 +7,7 @@ function sync(){
  const g=current();if(!g)return;
  g.id=$s('gid').value.trim();g.name=$s('gname').value.trim();g.role=$s('role').value;g.color=$s('color').value;g.sub=$s('sub').checked;
  g.generation=$s('generation').value;g.agency=$s('agency').value;g.country=$s('country').value;
- g.combat=readCombatFields();
+ g.combat=readCombatFields();g.ultimate=readUltimateFields();
  g.members=$s('memberNames').value.split(/\r?\n/).map(n=>n.trim()).filter(Boolean);
 }
 function readAsset(file,kind){
@@ -34,14 +34,14 @@ function refreshMembers(){
 }
 function show(){
  editorSerial++;const g=current();if(!g)return;
- $s('gid').value=g.id;$s('gname').value=g.name;$s('role').value=g.role;$s('color').value=g.color;$s('sub').checked=g.sub;$s('memberNames').value=g.members.join('\n');$s('editorTitle').textContent=g.name||'새 그룹';renderMetadata(g);const c=g.combat||{},sk=c.skill||{};$s('atk').value=c.damage??'';$s('interval').value=c.interval??'';$s('range').value=c.range??'';$s('skillKind').value=sk.kind||'';$s('skillName').value=sk.name||'';$s('skillEvery').value=sk.every??5;$s('skillPower').value=sk.power??1.5;$s('skillRadius').value=sk.radius??110;writeFXFields(c);renderCombatFields();
+ $s('gid').value=g.id;$s('gname').value=g.name;$s('role').value=g.role;$s('color').value=g.color;$s('sub').checked=g.sub;$s('memberNames').value=g.members.join('\n');$s('editorTitle').textContent=g.name||'새 그룹';renderMetadata(g);const c=g.combat||{},sk=c.skill||{};$s('atk').value=c.damage??'';$s('interval').value=c.interval??'';$s('range').value=c.range??'';$s('skillKind').value=sk.kind||'';$s('skillName').value=sk.name||'';$s('skillEvery').value=sk.every??5;$s('skillPower').value=sk.power??1.5;$s('skillRadius').value=sk.radius??110;writeFXFields(c);renderCombatFields();writeUltimateFields(g.ultimate);
  const list=$s('groupList');list.replaceChildren();draft.groups.forEach((item,i)=>{const q=$s('groupSearch').value.trim().toLowerCase();if(q&&i!==index&&![item.name,item.id,item.generation,item.agency,item.country].some(v=>String(v||'').toLowerCase().includes(q)))return;const b=document.createElement('button');b.textContent=(item.name||'새 그룹')+' · '+item.members.length;b.classList.toggle('active',i===index);b.onclick=()=>{if(pending)return status('파일 등록 중입니다.',true);sync();index=i;show()};list.append(b)});
  const assets=$s('groupAssets');assets.replaceChildren();for(const [key,title,kind] of [['photo','그룹 원형 사진','image'],['logo','그룹 로고 (반복 연출)','image'],['reveal','최초 등장 전체 화면 이미지','image'],['audio','등장 음원','audio']])assets.append(assetRow(title,g[key]||'',kind,v=>g[key]=v));refreshMembers()
 }
 function validated(){if(!admin||saving)throw Error('관리자 로그인 또는 저장 상태를 확인하세요.');if(pending)throw Error('파일 등록 중입니다.');sync();return normalizeCatalog(draft)}
 async function reloadPublished(){const loaded=await fetchPublished();draft=loaded.data;revision=loaded.revision;index=Math.min(index,draft.groups.length-1);$s('sourceLabel').textContent='CLOUD · r'+revision;show()}
 function access(){const root=$s('studioMain');root.inert=!admin||saving;$s('loginForm').hidden=admin;$s('logout').hidden=!admin;$s('logout').disabled=saving||pending>0;$s('authState').textContent=admin?'GRD 관리자 · 공개 편집 가능':'GRD 관리자 계정으로 로그인'}
-async function boot(){for(const role of roleOptions){const o=document.createElement('option');o.value=o.textContent=role;$s('role').append(o)}bindStudioFields();await reloadPublished();try{admin=await cloudAdmin()}catch(e){console.warn(e)}access()}
+async function boot(){for(const role of roleOptions){const o=document.createElement('option');o.value=o.textContent=role;$s('role').append(o)}bindStudioFields();bindStudioExpansion();await reloadPublished();try{admin=await cloudAdmin()}catch(e){console.warn(e)}access()}
 $s('loginForm').onsubmit=async ev=>{ev.preventDefault();try{await cloudLogin($s('loginName').value,$s('loginPassword').value);admin=true;await reloadPublished();status('관리자 로그인 완료')}catch(e){admin=false;status(e.message||'로그인 실패',true);$s('authState').textContent=e.message||'로그인 실패'}finally{$s('loginPassword').value='';access();if(!admin)$s('authState').textContent='로그인 실패 · 계정과 권한을 확인하세요.'}};
 $s('logout').onclick=async()=>{if(saving||pending)return;await cloudLogout();admin=false;access()};
 $s('reloadCloud').onclick=async()=>{if(pending||saving||!admin)return;if(!confirm('미저장 변경을 버리고 최신 공개 데이터를 불러올까요?'))return;try{await reloadPublished();status('최신 공개 데이터 로드 완료')}catch(e){status(e.message,true)}};
