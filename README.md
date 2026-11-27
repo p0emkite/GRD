@@ -91,3 +91,6 @@ No bench; recruitment requires an open slot, including automatic, batch, gamble 
 
 ### v0.12.1 — Performance icons and quick repeat reveal
 All 40 performance augments now have individual SVG pictograms, with rarity, title and effect in vertical order. Repeated group debut flash lasts 450ms (was 2.8s); only the initial 6.5s cinematic plays the registered debut track and owns the simulation pause.
+
+### v0.12.2 — Battle polish
+Removed targeted group casting (including automation); normal, gamble and diamond choice remain. Contract perk now increases missing-member probability. Repeat debut 300ms, logo only, first debut audio uses game BGM volume. Added group rank impact, role/skill/ultimate SFX, auto ultimate, wordmark, stable radial buttons, and coordinate-based drag merge. Existing locked cards remain protected. Season 03 stays active.

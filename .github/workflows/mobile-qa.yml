@@ -5,6 +5,7 @@ on:
       - 'index.html'
       - 'src/**'
       - 'tests/mobile-smoke.mjs'
+      - 'tests/battle-polish.mjs'
       - '.github/workflows/mobile-qa.yml'
   workflow_dispatch:
 permissions:
@@ -25,6 +26,7 @@ jobs:
       - name: Android Chromium and iPhone WebKit emulation
         run: |
           python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/grd-http.log 2>&1 &
+          node tests/battle-polish.mjs
           node tests/mobile-smoke.mjs
       - uses: actions/upload-artifact@v4
         if: always()

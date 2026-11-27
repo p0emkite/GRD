@@ -1,0 +1,27 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+const origin='http://127.0.0.1:8765',browser=await chromium.launch({headless:true});
+try{
+ const page=await browser.newPage({viewport:{width:1648,height:800}}),errors=[];
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.route('**/*',r=>r.request().url().startsWith(origin)?r.continue():r.abort());
+ await page.goto(origin+'/index.html');await page.locator('#launchTour').click();await page.waitForFunction(()=>!state.setup);
+ await page.evaluate(()=>{state.nextIn=100;dismissGuide();render()});
+ assert.equal(await page.locator('#group,#group5,#mobile-group').count(),0);
+ assert.equal(await page.evaluate(()=>castCost('group')===0&&!cast('group')),true);
+ await page.locator('#normal').click();
+ const id=await page.evaluate(()=>state.units[0].id);
+ const location=async id=>page.evaluate(id=>{const u=state.units.find(u=>u.id===id),p=slots[u.slot],r=canvas.getBoundingClientRect();return {x:r.left+p.x*r.width/900,y:r.top+p.y*r.height/420}},id);
+ const p=await location(id);await page.mouse.click(p.x,p.y);await page.locator('#unitWheel').waitFor({state:'visible'});
+ assert.equal(await page.locator('#unitWheel .wheel-action').count(),4);
+ const lock=page.locator('[data-wheel="lock"]'),box=await lock.boundingBox();
+ await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();const down=await lock.boundingBox();assert.ok(Math.abs(down.x-box.x)<2&&Math.abs(down.y-box.y)<2,'stable radial press');await page.mouse.up();
+ assert.equal(await page.evaluate(id=>state.units.find(u=>u.id===id).locked,id),true);await lock.click();assert.equal(await page.evaluate(id=>state.units.find(u=>u.id===id).locked,id),false);
+ const gold=await page.evaluate(()=>state.gold);await page.locator('[data-wheel="upgrade"]').click();assert.equal(await page.evaluate(()=>state.gold),gold-100);assert.equal(await page.evaluate(id=>state.units.find(u=>u.id===id).level,id),2);
+ await page.locator('[data-wheel="sell"]').click();assert.equal(await page.evaluate(()=>state.units.length),0);
+ const ids=await page.evaluate(()=>{const g=groups.find(x=>x.id==='ive')||groups[0];const a=addUnit('group',g.id,-1,0,2),b=addUnit('group',g.id,-1,0,2);render();return [a.id,b.id]});
+ const a=await location(ids[0]),b=await location(ids[1]);await page.mouse.click(a.x,a.y);await page.mouse.move(a.x,a.y);await page.mouse.down();await page.mouse.move(b.x,b.y,{steps:12});await page.mouse.up();assert.equal(await page.evaluate(()=>state.units.length),1);assert.equal(await page.evaluate(()=>state.units[0].level),3);assert.equal(await page.locator('#rankImpact').isVisible(),true);
+ const ult=await page.evaluate(()=>{const u=state.units[0],g=groupAny(u.gid);state.wave=1;state.nextIn=90;state.enemies=[{d:100,hp:100000,max:100000,kind:'basic',speed:0,boss:false,slow:0,shield:0}];ultimateEntry(g.id).charge=ultimateFor(g).charge;render();return g.id});await page.locator('#autoUltimate').check();await page.waitForFunction(id=>ultimateEntry(id).charge<2,ult);
+ await page.evaluate(()=>{state.augmentQueue=[{wave:5,picks:['world','contract','legendary']}];showPendingAugment()});assert.equal(await page.locator('#augmentChoices svg').count(),3);await page.locator('#augmentChoices button').first().click();
+ assert.deepEqual(errors,[]);console.log('PASS desktop radial press, upgrade, sell, 2-star drag merge, auto ultimate and performance icons');
+}finally{await browser.close()}
