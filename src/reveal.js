@@ -8,7 +8,7 @@ function showGroupReveal(g){
  name.textContent=g.name;img.hidden=!art;if(art){img.src=art;img.onerror=()=>{if(epoch===revealEpoch)img.hidden=true}}layer.style.setProperty('--group-accent',g.color);
  layer.hidden=false;void layer.offsetWidth;layer.classList.add('playing');
  if(first){state.paused=true;clearDrag();closeChoice();$('revealSkip').focus({preventScroll:true})}
- if(g.audio){try{const a=new Audio(g.audio);a.volume=prefs.reveal;revealAudio=a;void a.play().catch(()=>{})}catch(e){console.warn('Reveal audio unavailable',e)}}
+ if(g.audio&&prefs.masterOn!==false&&prefs.bgmOn!==false){try{const a=new Audio(g.audio);a.volume=prefs.reveal;revealAudio=a;void a.play().catch(()=>{})}catch(e){console.warn('Reveal audio unavailable',e)}}
  revealTimer=setTimeout(()=>{if(epoch===revealEpoch){stopReveal();render()}},first?6500:2800);
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state?.paused&&!$('groupCinematic').hidden){e.preventDefault();stopReveal();render()}});

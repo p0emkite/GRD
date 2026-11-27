@@ -15,7 +15,7 @@ function groupSkill(g){if(g.combat?.skill)return g.combat.skill;return Object.ha
 function focusGroup(){return groups.find(g=>g.id===state.focusId)||groups[0]}
 function setFocus(id){if(!state||state.done||state.paused||!groups.some(g=>g.id===id))return;state.focusId=id;render()}
 function groupDrawCost(g){return Math.max(1,(g.members.length<=5?2:1)-perk('contract'))}
-function castCost(kind){return kind==='normal'?1:kind==='group'?groupDrawCost(focusGroup()):kind==='gamble'?5:0}
+function castCost(kind){return kind==='normal'?100:kind==='group'?100*groupDrawCost(focusGroup()):kind==='gamble'?500:0}
 function groupDraw(g){const missing=g.members.filter(n=>!state.units.some(u=>u.type==='member'&&u.name===n));const p=g.members.length>=6?.88:g.members.length>=4?.7:.35;return pick(missing.length&&runRandom()<p?missing:g.members)}
 function normalDraw(){const missing=members.filter(n=>!state.units.some(u=>u.type==='member'&&u.name===n));return pick(missing.length&&runRandom()<.65+.15*perk('talent')?missing:members)}
 function gambleTier(){const r=runRandom();return r<.01?3:r<.1?2:1}
@@ -25,9 +25,9 @@ function groupBase(g){return g.combat?.damage??defaultGroupDamage(g)}
 function groupAttackProfile(role){return role==='저격'?{interval:1.05,range:320}:role==='광역'?{interval:1.05,range:205}:role==='감속'?{interval:.85,range:200}:role==='지원'?{interval:.65,range:195}:{interval:.75,range:220}}
 function recommendedGroupCombat(g){if(!g.members?.length)throw Error('멤버 이름을 먼저 입력하세요.');const bare={...g,combat:{}},base=groupAttackProfile(g.role);const original=groups.find(x=>x.id===g.id),skill=Object.hasOwn(skillProfiles,g.id)&&original?.role===g.role?groupSkill(bare):g.role==='속사'?{name:'TEMPO UP',kind:'tempo',every:5,power:1.45}:groupSkill({...bare,id:''});return {damage:Math.round(groupBase(bare)*100)/100,...base,skill:{...skill,radius:skill.radius??110}}}
 const trainingCosts=[1500,2500,4000,6000,8500,11500,15000,19000];
-function trainTeam(){if(!state||state.done||state.paused)return false;const cost=trainingCost();if(!cost||state.gold<cost)return false;state.gold-=cost;state.training++;log('TEAM TRAINING +'+state.training,'good');render();return true}
+function trainTeam(){if(!state||state.done||state.paused)return false;const cost=trainingCost();if(!cost||state.gold<cost)return false;state.gold-=cost;state.training++;soundEffect('upgrade');log('TEAM TRAINING +'+state.training,'good');render();return true}
 function teamBoost(){return 1+.12*(state.training||0)}
-function combatHit(u,e,st,source,deployed){let damage=st.damage,crit=st.role==='치명타'&&runRandom()<.25+.12*perk('critical');if(crit)damage*=2.1;
+function combatHit(u,e,st,source,deployed){soundEffect('hit');let damage=st.damage,crit=st.role==='치명타'&&runRandom()<.25+.12*perk('critical');if(crit)damage*=2.1;
  const p=point(e.d),g=u.type==='group'?groupOf(u):null,skill=g?groupSkill(g):null;u.attacks=(u.attacks||0)+1;const proc=skill&&u.attacks%Math.max(2,skill.every-perk('encore')-perk('rehearsal')-synergyBoost(u).skill)===0;
  if(proc&&(skill.kind==='pierce'||skill.kind==='critical'||skill.kind==='tempo')){damage*=skill.power;crit=crit||skill.kind==='critical'}
  if(proc&&skill.kind==='tempo')u.cd*=.35;

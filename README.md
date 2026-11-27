@@ -85,3 +85,6 @@ A real orthographic Three.js stadium with modeled trusses, audience, stage platf
 
 ### v0.11.3 — Baked venue delivery
 All three 1800×840 WebP renders are included as local game assets; quality settings downsample the same art instead of dropping it. Three.js is only an optional fallback when the local asset is absent. The regular art regression runs with external requests blocked. Set GRD_BAKE=1 to test the original scene generator.
+
+## v0.12 Season 03 — Board-only economy
+No bench; recruitment requires an open slot, including automatic, batch, gamble and diamond selection. Start 1,600G; normal 100G, group 100–200G, gamble 500G, base member resale 50G. Diamonds remain special currency. Prior saves convert only after confirmation; excess units settle at sale value and converted runs are excluded from new rankings. Ten-second first wave, hover stats, radial actions, sell zone, original synthesized music/SFX and independent audio toggles, automatic portrait crop with drag/wheel. No third-party NCS recordings bundled. Existing logo and full-screen reveal artwork retain original aspect ratio.

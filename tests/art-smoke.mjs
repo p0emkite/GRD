@@ -21,7 +21,7 @@ for(const key of ['concert','broadcast','awards']){
  if(forceBake){const webp=await page.evaluate(()=>premiumStageArt.toDataURL('image/webp',.85).split(',')[1]);await fs.writeFile('art-qa/'+key+'.webp',Buffer.from(webp,'base64'))}await page.screenshot({path:'art-qa/'+key+'.png'});console.log('PASS',key,stat.w,stat.h,stat.distinct);
 }
 assert.equal(new Set(seen).size,3,'skin differentiation');
-const count=await page.evaluate(()=>state.tickets);await page.locator('#normal').click();assert.equal(await page.evaluate(()=>state.tickets),count-1);
+const count=await page.evaluate(()=>state.gold);await page.locator('#normal').click();assert.equal(await page.evaluate(()=>state.gold),count-100);
 await page.evaluate(()=>{prefs.quality='low';loadVenueSkin()});if(forceBake)await page.waitForFunction(()=>!premiumStageArt&&!document.documentElement.classList.contains('premium-stage-ready'));else{await page.waitForFunction(()=>premiumStageArt?.width===900&&document.documentElement.classList.contains('premium-stage-ready'));assert.equal(requestedThree,0,'baked assets do not request Three.js')}
 await page.screenshot({path:'art-qa/low-fallback.png'});
 assert.deepEqual(errors,[]);console.log('PASS casting and low quality',forceBake?'runtime fallback':'local asset; no CDN');
